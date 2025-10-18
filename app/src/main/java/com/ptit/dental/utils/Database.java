@@ -16,7 +16,7 @@ public class Database {
     public static Database _instance = null;
     private Connection connection;
     
-    private final String URL = "jdbc:mysql://localhost:3306/dental";
+    private final String URL = "jdbc:mysql://180.93.139.29:23306/dental";
     private final String USERNAME = "root";
     private final String PASSWORD = "";
     
