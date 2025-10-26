@@ -51,7 +51,7 @@ public class LoginView extends BaseView {
         gbc.gridwidth = 1;
         gbc.gridy++;
         JLabel usernameLabel = new JLabel("Tên Người Dùng", SwingConstants.RIGHT);
-        usernameLabel.setForeground(Color.WHITE); // 🔥 Đổi màu sang trắng
+        usernameLabel.setForeground(Color.WHITE); 
         formPanel.add(usernameLabel, gbc);
 
         gbc.gridx = 1;
@@ -62,7 +62,7 @@ public class LoginView extends BaseView {
         gbc.gridy++;
         gbc.gridx = 0;
         JLabel passwordLabel = new JLabel("Mật Khẩu", SwingConstants.RIGHT);
-        passwordLabel.setForeground(Color.WHITE); // 🔥 Đổi màu sang trắng
+        passwordLabel.setForeground(Color.WHITE); 
         formPanel.add(passwordLabel, gbc);
 
         gbc.gridx = 1;
@@ -74,7 +74,7 @@ public class LoginView extends BaseView {
         gbc.gridx = 1;
         showPasswordCheck = new JCheckBox("Hiển thị mật khẩu");
         showPasswordCheck.setOpaque(false);
-        showPasswordCheck.setForeground(Color.WHITE); // 🔥 Cho checkbox chữ trắng luôn
+        showPasswordCheck.setForeground(Color.WHITE); 
         formPanel.add(showPasswordCheck, gbc);
 
         // Login button
