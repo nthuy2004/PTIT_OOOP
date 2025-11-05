@@ -3,13 +3,14 @@
  */
 package com.ptit.dental;
 
-import com.ptit.dental.controller.LoginController;
+import com.ptit.dental.controller.*;
 import com.ptit.dental.model.dao.StaffDAO;
 import com.ptit.dental.model.entity.Staff;
 import com.ptit.dental.model.service.AuthService;
 import com.ptit.dental.utils.Database;
 import com.ptit.dental.utils.Injector;
-import com.ptit.dental.view.LoginView;
+import com.ptit.dental.view.*;
+
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -30,7 +31,11 @@ public class App {
         Injector.register(AuthService.class, new AuthService(staffDAO));
 
         java.awt.EventQueue.invokeLater(() -> {
-            new LoginController(new LoginView()).show();
+            //new LoginController(new LoginView()).show();
+//            new MedicalRecordController(new  MedicalRecordView()).show();
+//            new InvoiceController(new InvoiceView()).show();
+//            new SearchingInvoiceController(new SearchingInvoice()).show();
+           new MedicineListController(new MedicineListView()).show();
         });
    }
 }

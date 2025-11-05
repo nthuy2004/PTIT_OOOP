@@ -24,12 +24,13 @@ dependencies {
     // This dependency is used by the application.
     implementation libs.guava
     implementation("mysql:mysql-connector-java:8.0.33")
+    implementation 'com.toedter:jcalendar:1.4'
 }
 
 // Apply a specific Java toolchain to ease working on different environments.
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(24)
+        languageVersion = JavaLanguageVersion.of(25)
     }
 }
 
@@ -42,3 +43,4 @@ tasks.named('test') {
     // Use JUnit Platform for unit tests.
     useJUnitPlatform()
 }
+
