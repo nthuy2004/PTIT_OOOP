@@ -31,11 +31,12 @@ public class App {
         Injector.register(AuthService.class, new AuthService(staffDAO));
 
         java.awt.EventQueue.invokeLater(() -> {
-            //new LoginController(new LoginView()).show();
-//            new MedicalRecordController(new  MedicalRecordView()).show();
-//            new InvoiceController(new InvoiceView()).show();
-           new SearchingInvoiceController(new SearchingInvoice()).show();
-//            new MedicineListController(new MedicineListView()).show();
+        //    new LoginController(new LoginView()).show();
+            new PatientManagementController(new PatientManagementView()).show();
+        //   new InvoiceController(new InvoiceView()).show();
+      //     new SearchingInvoiceController(new SearchingInvoice()).show();
+      //    new MedicineListController(new MedicineListView()).show();
+        //    new MainDashboardController(new MainDashboardView());
         });
    }
 }
