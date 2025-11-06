@@ -34,8 +34,8 @@ public class App {
             //new LoginController(new LoginView()).show();
 //            new MedicalRecordController(new  MedicalRecordView()).show();
 //            new InvoiceController(new InvoiceView()).show();
-//            new SearchingInvoiceController(new SearchingInvoice()).show();
-           new MedicineListController(new MedicineListView()).show();
+           new SearchingInvoiceController(new SearchingInvoice()).show();
+//            new MedicineListController(new MedicineListView()).show();
         });
    }
 }

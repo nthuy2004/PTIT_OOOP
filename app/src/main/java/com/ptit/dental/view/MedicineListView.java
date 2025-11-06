@@ -32,17 +32,18 @@ public class MedicineListView extends BaseView {
         searchButton.setBackground(new Color(255, 87, 34));
         searchButton.setForeground(Color.WHITE);
 
+        String imagePath = "/com/ptit/dental/image/";
         // Action buttons
         addButton = new JButton();
-        addButton.setIcon(new ImageIcon("plus.png")); // Add your icon
+        addButton.setIcon(new ImageIcon(getClass().getResource(imagePath + "plus.png")));
         addButton.setToolTipText("Thêm thuốc");
 
         deleteButton = new JButton();
-        deleteButton.setIcon(new ImageIcon("bin.png")); // Add your icon
+        deleteButton.setIcon(new ImageIcon(getClass().getResource(imagePath + "bin.png")));
         deleteButton.setToolTipText("Xóa thuốc");
 
         editButton = new JButton();
-        editButton.setIcon(new ImageIcon("compose.png")); // Add your icon
+        editButton.setIcon(new ImageIcon(getClass().getResource(imagePath + "compose.png")));
         editButton.setToolTipText("Sửa thông tin thuốc");
 
         // Table setup
