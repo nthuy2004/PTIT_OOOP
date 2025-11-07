@@ -6,8 +6,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import com.ptit.dental.base.BaseView;
 
-public class MainDashboardView extends JFrame {
+public class MainDashboardView extends BaseView {
 
     public JButton btnLogout;
     public JPanel contentPanel;
@@ -31,7 +32,7 @@ public class MainDashboardView extends JFrame {
         logoPanel.setOpaque(false);
 
         JLabel logoLabel = new JLabel(new ImageIcon(getClass().getResource(imagePath + "rang1.png")));
-        JLabel titleLabel = new JLabel("<html><b>DCMS</b><br>Hệ thống quản lý răng</html>");
+        JLabel titleLabel = new JLabel("<html><b>Dental Management System</b><br>Hệ thống quản lý răng</html>");
         titleLabel.setFont(new Font("SansSerif", Font.PLAIN, 17));
 
         logoPanel.add(logoLabel);

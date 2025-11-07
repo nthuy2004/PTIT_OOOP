@@ -18,4 +18,7 @@ public class BaseController<E extends BaseView> {
     public void show() {
         view.showView();
     }
+
+    public void setOnLoginSuccess(Object o) {
+    }
 }

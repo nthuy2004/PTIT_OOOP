@@ -254,7 +254,7 @@ public class PatientManagementView extends BaseView {
         add(tableScrollPane, BorderLayout.CENTER);
 
         // Frame properties
-        setTitle("TWP clinic management - Bệnh nhân");
+        setTitle("Quản lý răng - Bệnh nhân");
         setSize(900, 600);
         setLocationRelativeTo(null);
     }

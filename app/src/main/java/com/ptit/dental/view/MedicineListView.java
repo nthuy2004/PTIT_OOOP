@@ -97,7 +97,7 @@ public class MedicineListView extends BaseView {
         add(tableScrollPane, BorderLayout.CENTER);
 
         // Frame properties
-        setTitle("TWP clinic management - Thuốc");
+        setTitle("Quản lý răng - Thuốc");
         setSize(900, 600);
         setLocationRelativeTo(null);
     }

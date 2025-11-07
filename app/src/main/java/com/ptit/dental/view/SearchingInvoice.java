@@ -60,7 +60,7 @@ public class SearchingInvoice extends BaseView {
         add(tableScrollPane, BorderLayout.CENTER);
 
         // Set frame properties
-        setTitle("TWP clinic management - Viện phí");
+        setTitle("Quản lý răng - Viện phí");
         setSize(800, 600);
         setLocationRelativeTo(null);
     }

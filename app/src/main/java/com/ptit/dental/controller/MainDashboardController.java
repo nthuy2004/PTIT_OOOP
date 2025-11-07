@@ -53,4 +53,7 @@ public class MainDashboardController {
             new MainDashboardController(view);
         });
     }
+
+    public void show() {
+    }
 }

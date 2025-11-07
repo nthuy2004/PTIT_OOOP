@@ -15,7 +15,7 @@ public class InvoiceView extends BaseView {
     private JButton btnPrint, btnSavePDF, btnClose;
 
     public InvoiceView() {
-        setTitle("EHR Hospital Management System");
+        setTitle("Quản lý răng - Hóa đơn");
         setSize(950, 550);
         setLocationRelativeTo(null);
 
