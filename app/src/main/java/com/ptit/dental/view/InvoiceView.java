@@ -12,7 +12,7 @@ public class InvoiceView extends BaseView {
     private JTextField txtPatientID, txtAdmissionName, txtAdmissionDate, txtDischargeDate;
     private JTable invoiceTable;
     private JTextField txtSubTotal, txtTax, txtDiscount, txtGrandTotal;
-    private JButton btnPrint, btnSavePDF, btnClose;
+    private JButton btnPrint, btnSavePDF, btnClose, btnHome;
 
     public InvoiceView() {
         setTitle("Quản lý răng - Hóa đơn");
@@ -51,6 +51,11 @@ public class InvoiceView extends BaseView {
         btnPrint = new JButton("Print Invoice");
         btnSavePDF = new JButton("Save as PDF");
         btnClose = new JButton("Close");
+        btnHome = new JButton("Quay về trang chủ");
+        btnHome.setBackground(new Color(76, 175, 80));
+        btnHome.setForeground(Color.WHITE);
+        btnHome.setFocusPainted(false);
+        btnHome.addActionListener(e -> dispose());
     }
 
     private void layoutComponents() {
@@ -141,6 +146,7 @@ public class InvoiceView extends BaseView {
         btnPanel.add(btnPrint);
         btnPanel.add(btnSavePDF);
         btnPanel.add(btnClose);
+        btnPanel.add(btnHome);
 
         add(btnPanel, BorderLayout.SOUTH);
     }

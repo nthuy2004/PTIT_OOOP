@@ -170,6 +170,7 @@ public class PatientManagementView extends BaseView {
     private JButton addButton;
     private JButton deleteButton;
     private JButton editButton;
+    private JButton btnHome;
 
     public PatientManagementView() {
         initComponents();
@@ -203,6 +204,13 @@ public class PatientManagementView extends BaseView {
         editButton.setIcon(new ImageIcon(getClass().getResource(imagePath + "compose.png")));
         editButton.setToolTipText("Sửa thông tin bệnh nhân");
 
+        // Nút quay về trang chủ
+        btnHome = new JButton("Quay về trang chủ");
+        btnHome.setBackground(new Color(76, 175, 80));
+        btnHome.setForeground(Color.WHITE);
+        btnHome.setFocusPainted(false);
+        btnHome.addActionListener(e -> dispose());
+
         // Table setup
         String[] columnNames = {"Mã BN", "Họ và tên", "Ngày sinh", "Giới tính", "Địa chỉ", "Số điện thoại"};
         DefaultTableModel model = new DefaultTableModel(columnNames, 0) {
@@ -235,6 +243,7 @@ public class PatientManagementView extends BaseView {
         actionPanel.add(addButton);
         actionPanel.add(deleteButton);
         actionPanel.add(editButton);
+        actionPanel.add(btnHome);
 
         // Combine header
         JPanel headerPanel = new JPanel(new BorderLayout());

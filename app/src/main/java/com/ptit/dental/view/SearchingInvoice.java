@@ -10,6 +10,7 @@ public class SearchingInvoice extends BaseView {
     private JButton searchButton;
     private JTable invoiceTable;
     private JLabel titleLabel;
+    private JButton btnHome;
     public SearchingInvoice() {
         initComponents();
         setupLayout();
@@ -24,6 +25,13 @@ public class SearchingInvoice extends BaseView {
         searchButton = new JButton("Tìm");
         searchButton.setBackground(new Color(255, 87, 34)); // Orange color
         searchButton.setForeground(Color.WHITE);
+
+        // Nút quay về trang chủ
+        btnHome = new JButton("Quay về trang chủ");
+        btnHome.setBackground(new Color(76, 175, 80));
+        btnHome.setForeground(Color.WHITE);
+        btnHome.setFocusPainted(false);
+        btnHome.addActionListener(e -> dispose());
 
         // Table
         String[] columnNames = {"Mã hóa đơn", "Tên bệnh nhân", "Ngày lập", "Tổng tiền"};
@@ -41,9 +49,14 @@ public class SearchingInvoice extends BaseView {
         topPanel.add(titleLabel, BorderLayout.CENTER);
         
         // Search panel
-        JPanel searchPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        searchPanel.add(searchField);
-        searchPanel.add(searchButton);
+        JPanel searchPanel = new JPanel(new BorderLayout());
+        JPanel leftPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        leftPanel.add(searchField);
+        leftPanel.add(searchButton);
+        JPanel rightPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        rightPanel.add(btnHome);
+        searchPanel.add(leftPanel, BorderLayout.WEST);
+        searchPanel.add(rightPanel, BorderLayout.EAST);
 
         // Combine top elements
         JPanel headerPanel = new JPanel(new BorderLayout());

@@ -14,6 +14,7 @@ public class MedicineListView extends BaseView {
     private JButton addButton;
     private JButton deleteButton;
     private JButton editButton;
+    private JButton btnHome;
 
     public MedicineListView() {
         initComponents();
@@ -45,6 +46,13 @@ public class MedicineListView extends BaseView {
         editButton = new JButton();
         editButton.setIcon(new ImageIcon(getClass().getResource(imagePath + "compose.png")));
         editButton.setToolTipText("Sửa thông tin thuốc");
+
+        // Nút quay về trang chủ
+        btnHome = new JButton("Quay về trang chủ");
+        btnHome.setBackground(new Color(76, 175, 80));
+        btnHome.setForeground(Color.WHITE);
+        btnHome.setFocusPainted(false);
+        btnHome.addActionListener(e -> dispose());
 
         // Table setup
         String[] columnNames = {"Mã thuốc", "Tên thuốc", "Ngày nhập", "Ngày hết hạn", "Giá", "Số lượng tồn kho"};
@@ -78,6 +86,7 @@ public class MedicineListView extends BaseView {
         actionPanel.add(addButton);
         actionPanel.add(deleteButton);
         actionPanel.add(editButton);
+        actionPanel.add(btnHome);
 
         // Combine header elements
         JPanel headerPanel = new JPanel(new BorderLayout());

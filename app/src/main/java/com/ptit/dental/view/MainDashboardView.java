@@ -57,7 +57,7 @@ public class MainDashboardView extends BaseView {
         contentPanel.setBorder(BorderFactory.createEmptyBorder(20, 30, 20, 30));
         contentPanel.setBackground(new Color(245, 245, 245));
 
-        contentPanel.add(createMenuButton("Nhân sự", imagePath + "employee.png"));
+        contentPanel.add(createMenuButton("Viện phí", imagePath + "employee.png"));
 
         contentPanel.add(createMenuButton("Thuốc", imagePath + "medicine.png"));
 
@@ -68,6 +68,31 @@ public class MainDashboardView extends BaseView {
 
         setVisible(true);
     }
+
+//    private JPanel createMenuButton(String title, String iconPath) {
+//        JPanel panel = new JPanel(new BorderLayout());
+//        panel.setBackground(Color.WHITE);
+//        panel.setBorder(BorderFactory.createLineBorder(new Color(230, 230, 230), 1, true));
+//
+//        JLabel icon = new JLabel(new ImageIcon(getClass().getResource(iconPath)), JLabel.CENTER);
+//        JLabel label = new JLabel(title, JLabel.CENTER);
+//        label.setFont(new Font("SansSerif", Font.PLAIN, 18));
+//
+//        panel.add(icon, BorderLayout.CENTER);
+//        panel.add(label, BorderLayout.SOUTH);
+//
+//        panel.addMouseListener(new MouseAdapter() {
+//            public void mouseEntered(MouseEvent e) {
+//                panel.setBackground(new Color(240, 240, 240));
+//            }
+//
+//            public void mouseExited(MouseEvent e) {
+//                panel.setBackground(Color.WHITE);
+//            }
+//        });
+//
+//        return panel;
+//    }
 
     private JPanel createMenuButton(String title, String iconPath) {
         JPanel panel = new JPanel(new BorderLayout());
@@ -81,18 +106,28 @@ public class MainDashboardView extends BaseView {
         panel.add(icon, BorderLayout.CENTER);
         panel.add(label, BorderLayout.SOUTH);
 
+        // Hiệu ứng hover
         panel.addMouseListener(new MouseAdapter() {
+            @Override
             public void mouseEntered(MouseEvent e) {
                 panel.setBackground(new Color(240, 240, 240));
             }
 
+            @Override
             public void mouseExited(MouseEvent e) {
                 panel.setBackground(Color.WHITE);
+            }
+
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                // Xử lý chuyển trang tại đây
+                handleMenuClick(title);
             }
         });
 
         return panel;
     }
+
 
     public JButton getBtnLogout() {
         return btnLogout;
@@ -101,4 +136,27 @@ public class MainDashboardView extends BaseView {
     public JPanel getContentPanel() {
         return contentPanel;
     }
+
+    private void handleMenuClick(String title) {
+        // Các view con hiện đang kế thừa JFrame (BaseView), không thể add trực tiếp vào JPanel.
+        // Thay vào đó, mở chúng dưới dạng cửa sổ riêng.
+        switch (title) {
+            case "Bệnh nhân":
+                new PatientManagementView().showView();
+                break;
+            case "Thuốc":
+                new MedicineListView().showView();
+                break;
+            case "Viện phí":
+                new SearchingInvoice().showView();
+                break;
+            case "Hóa đơn":
+                new InvoiceView().showView();
+                break;
+            default:
+                JOptionPane.showMessageDialog(this, "Trang chưa được phát triển", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+                break;
+        }
+    }
+
 }

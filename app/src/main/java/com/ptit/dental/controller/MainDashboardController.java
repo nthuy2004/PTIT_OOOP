@@ -31,20 +31,7 @@ public class MainDashboardController {
             }
         });
 
-        // Gắn sự kiện click cho từng panel chức năng
-        for (java.awt.Component comp : view.contentPanel.getComponents()) {
-            if (comp instanceof JPanel) {
-                JPanel panel = (JPanel) comp;
-                panel.addMouseListener(new MouseAdapter() {
-                    @Override
-                    public void mouseClicked(MouseEvent e) {
-                        JLabel label = (JLabel) ((JPanel) panel).getComponent(1);
-                        String title = label.getText();
-                        JOptionPane.showMessageDialog(view, "Mở chức năng: " + title);
-                    }
-                });
-            }
-        }
+        // Sự kiện click cho menu đã được xử lý trong MainDashboardView
     }
 
     public static void main(String[] args) {
@@ -55,5 +42,6 @@ public class MainDashboardController {
     }
 
     public void show() {
+
     }
 }
