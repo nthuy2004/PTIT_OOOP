@@ -142,16 +142,22 @@ public class MainDashboardView extends BaseView {
         // Thay vào đó, mở chúng dưới dạng cửa sổ riêng.
         switch (title) {
             case "Bệnh nhân":
-                new PatientManagementView().showView();
+                PatientManagementView patientView = new PatientManagementView();
+                new com.ptit.dental.controller.PatientManagementController(patientView);
+                patientView.showView();
                 break;
             case "Thuốc":
-                new MedicineListView().showView();
+                MedicineListView medicineView = new MedicineListView();
+                new com.ptit.dental.controller.MedicineListController(medicineView);
+                medicineView.showView();
                 break;
             case "Viện phí":
                 new SearchingInvoice().showView();
                 break;
             case "Hóa đơn":
-                new InvoiceView().showView();
+                InvoiceView invoiceView = new InvoiceView();
+                new com.ptit.dental.controller.InvoiceController(invoiceView);
+                invoiceView.showView();
                 break;
             default:
                 JOptionPane.showMessageDialog(this, "Trang chưa được phát triển", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
