@@ -29,47 +29,82 @@ public class CreatingInvoiceView extends JDialog {
         txtAmount = new JTextField(20);
         dateChooser = new JDateChooser();
         dateChooser.setDateFormatString("dd/MM/yyyy");
+<<<<<<< HEAD
         
         saveButton = new JButton("Lưu");
         cancelButton = new JButton("Hủy");
         
+=======
+
+        saveButton = new JButton("Lưu");
+        cancelButton = new JButton("Hủy");
+
+>>>>>>> origin/Nam
         cancelButton.addActionListener(e -> dispose());
     }
 
     private void setupLayout() {
         setLayout(new BorderLayout(10, 10));
+<<<<<<< HEAD
         
+=======
+
+>>>>>>> origin/Nam
         JPanel mainPanel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 5, 5, 5);
         gbc.fill = GridBagConstraints.HORIZONTAL;
+<<<<<<< HEAD
         
+=======
+
+>>>>>>> origin/Nam
         // Add components
         gbc.gridx = 0; gbc.gridy = 0;
         mainPanel.add(new JLabel("Mã bệnh nhân:"), gbc);
         gbc.gridx = 1;
         mainPanel.add(txtPatientID, gbc);
+<<<<<<< HEAD
         
+=======
+
+>>>>>>> origin/Nam
         gbc.gridx = 0; gbc.gridy = 1;
         mainPanel.add(new JLabel("Dịch vụ:"), gbc);
         gbc.gridx = 1;
         mainPanel.add(serviceComboBox, gbc);
+<<<<<<< HEAD
         
+=======
+
+>>>>>>> origin/Nam
         gbc.gridx = 0; gbc.gridy = 2;
         mainPanel.add(new JLabel("Số tiền:"), gbc);
         gbc.gridx = 1;
         mainPanel.add(txtAmount, gbc);
+<<<<<<< HEAD
         
+=======
+
+>>>>>>> origin/Nam
         gbc.gridx = 0; gbc.gridy = 3;
         mainPanel.add(new JLabel("Ngày tạo:"), gbc);
         gbc.gridx = 1;
         mainPanel.add(dateChooser, gbc);
+<<<<<<< HEAD
         
+=======
+
+>>>>>>> origin/Nam
         // Button panel
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         buttonPanel.add(saveButton);
         buttonPanel.add(cancelButton);
+<<<<<<< HEAD
         
+=======
+
+>>>>>>> origin/Nam
         add(mainPanel, BorderLayout.CENTER);
         add(buttonPanel, BorderLayout.SOUTH);
     }

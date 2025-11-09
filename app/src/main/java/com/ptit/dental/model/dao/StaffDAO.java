@@ -29,44 +29,48 @@ public class StaffDAO {
 
     public Staff getById(int id) throws SQLException {
         String sql = "SELECT * FROM staff WHERE id = ?";
-        PreparedStatement ps = conn.prepareStatement(sql);
-        ps.setInt(1, id);
-        ResultSet rs = ps.executeQuery();
-        if(rs.next()) {
-            return new Staff(
-                    rs.getInt("id"),
-                    rs.getString("username"),
-                    rs.getString("password"),
-                    rs.getString("email"),
-                    rs.getString("fullname"),
-                    rs.getDate("birthday"),
-                    Gender.fromInt(rs.getInt("gender")),
-                    rs.getString("address"),
-                    rs.getString("phone"),
-                    Role.fromInt(rs.getInt("role"))
-            );
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return new Staff(
+                            rs.getInt("id"),
+                            rs.getString("username"),
+                            rs.getString("password"),
+                            rs.getString("email"),
+                            rs.getString("fullname"),
+                            rs.getDate("birthday"),
+                            Gender.fromInt(rs.getInt("gender")),
+                            rs.getString("address"),
+                            rs.getString("phone"),
+                            Role.fromInt(rs.getInt("role"))
+                    );
+                }
+            }
         }
         return null;
     }
 
     public Staff getByUsername(String username) throws SQLException {
         String sql = "SELECT * FROM staff WHERE username = ?";
-        PreparedStatement ps = conn.prepareStatement(sql);
-        ps.setString(1, username);
-        ResultSet rs = ps.executeQuery();
-        if(rs.next()) {
-            return new Staff(
-                    rs.getInt("id"),
-                    rs.getString("username"),
-                    rs.getString("password"),
-                    rs.getString("email"),
-                    rs.getString("fullname"),
-                    rs.getDate("birthday"),
-                    Gender.fromInt(rs.getInt("gender")),
-                    rs.getString("address"),
-                    rs.getString("phone"),
-                    Role.fromInt(rs.getInt("role"))
-            );
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, username);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return new Staff(
+                            rs.getInt("id"),
+                            rs.getString("username"),
+                            rs.getString("password"),
+                            rs.getString("email"),
+                            rs.getString("fullname"),
+                            rs.getDate("birthday"),
+                            Gender.fromInt(rs.getInt("gender")),
+                            rs.getString("address"),
+                            rs.getString("phone"),
+                            Role.fromInt(rs.getInt("role"))
+                    );
+                }
+            }
         }
         return null;
     }
@@ -75,22 +79,23 @@ public class StaffDAO {
         String sql = "SELECT * FROM staff";
         List<Staff> staffList = new ArrayList<>();
 
-        PreparedStatement ps = conn.prepareStatement(sql);
-        ResultSet rs = ps.executeQuery();
-        if(rs.next()) {
-            Staff s = new Staff(
-                    rs.getInt("id"),
-                    rs.getString("username"),
-                    rs.getString("password"),
-                    rs.getString("email"),
-                    rs.getString("fullname"),
-                    rs.getDate("birthday"),
-                    Gender.fromInt(rs.getInt("gender")),
-                    rs.getString("address"),
-                    rs.getString("phone"),
-                    Role.fromInt(rs.getInt("role"))
-            );
-            staffList.add(s);
+        try (PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                Staff s = new Staff(
+                        rs.getInt("id"),
+                        rs.getString("username"),
+                        rs.getString("password"),
+                        rs.getString("email"),
+                        rs.getString("fullname"),
+                        rs.getDate("birthday"),
+                        Gender.fromInt(rs.getInt("gender")),
+                        rs.getString("address"),
+                        rs.getString("phone"),
+                        Role.fromInt(rs.getInt("role"))
+                );
+                staffList.add(s);
+            }
         }
         return staffList;
     }

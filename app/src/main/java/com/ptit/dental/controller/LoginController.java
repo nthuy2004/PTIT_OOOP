@@ -1,3 +1,42 @@
+<<<<<<< HEAD
+=======
+///*
+// * PTIT OOP
+// * QUAN LY PHONG KHAM RANG
+// */
+//package com.ptit.dental.controller;
+//
+//import com.ptit.dental.base.BaseController;
+//import com.ptit.dental.model.service.AuthService;
+//import com.ptit.dental.utils.Injector;
+//import com.ptit.dental.view.LoginView;
+//
+///**
+// *
+// * @author Administrator
+// */
+//public class LoginController extends BaseController<LoginView> {
+//    public LoginController(LoginView view) {
+//        super(view);
+//
+//        view.btnLogin.addActionListener(e -> {
+//
+//            AuthService authService = Injector.get(AuthService.class);
+//
+//            String user = view.txtUser.getText();
+//            System.out.println("Hello, " + user);
+//
+//            try {
+//                authService.Login(user, "12345");
+//            } catch (Exception ex) {
+//                throw new RuntimeException(ex);
+//            }
+//
+//        });
+//    }
+//}
+
+>>>>>>> origin/Nam
 /////*
 //// * PTIT OOP
 //// * QUAN LY PHONG KHAM RANG
@@ -53,6 +92,49 @@
 //}
 
 
+<<<<<<< HEAD
+=======
+//package com.ptit.dental.controller;
+//
+//import com.ptit.dental.base.BaseController;
+//import com.ptit.dental.view.LoginView;
+//
+//import javax.swing.*;
+//
+//public class LoginController extends BaseController<LoginView> {
+//
+//    public LoginController(LoginView view) {
+//        super(view);
+//        initController();
+//    }
+//
+//
+//    private void initController() {
+//        view.loginButton.addActionListener(e -> handleLogin());
+//        view.showPasswordCheck.addActionListener(e ->
+//                view.passwordField.setEchoChar(view.showPasswordCheck.isSelected() ? (char) 0 : '•'));
+//    }
+//
+//    private void handleLogin() {
+//        String username = view.usernameField.getText().trim();
+//        String password = new String(view.passwordField.getPassword()).trim();
+//
+//        if (username.isEmpty() || password.isEmpty()) {
+//            JOptionPane.showMessageDialog(view, "Hãy điền đầy đủ thông tin!", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
+//            return;
+//        }
+//
+//        if (username.equalsIgnoreCase("admin") && password.equals("1")) {
+//            JOptionPane.showMessageDialog(view, "Đăng nhập thành công!", "Thành công", JOptionPane.INFORMATION_MESSAGE);
+//        } else {
+//            JOptionPane.showMessageDialog(view, "Sai tài khoản hoặc mật khẩu!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+//        }
+//    }
+//}
+//
+
+
+>>>>>>> origin/Nam
 package com.ptit.dental.controller;
 
 import com.ptit.dental.base.BaseController;
@@ -62,6 +144,7 @@ import javax.swing.*;
 
 public class LoginController extends BaseController<LoginView> {
 
+<<<<<<< HEAD
     public LoginController(LoginView view) {
         super(view);
         initController();
@@ -90,3 +173,46 @@ public class LoginController extends BaseController<LoginView> {
     }
 }
 
+=======
+    // ⚡ Callback sẽ chạy sau khi đăng nhập thành công
+    private Runnable onLoginSuccess;
+
+    public LoginController(LoginView view) {
+        super(view);
+        initController();
+    }
+
+    // Cho phép App.java gán callback
+    public void setOnLoginSuccess(Runnable onLoginSuccess) {
+        this.onLoginSuccess = onLoginSuccess;
+    }
+
+    private void initController() {
+        view.loginButton.addActionListener(e -> handleLogin());
+        view.showPasswordCheck.addActionListener(e ->
+                view.passwordField.setEchoChar(view.showPasswordCheck.isSelected() ? (char) 0 : '•'));
+    }
+
+    private void handleLogin() {
+        String username = view.usernameField.getText().trim();
+        String password = new String(view.passwordField.getPassword()).trim();
+
+        if (username.isEmpty() || password.isEmpty()) {
+            JOptionPane.showMessageDialog(view, "Hãy điền đầy đủ thông tin!", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        if (username.equalsIgnoreCase("admin") && password.equals("1")) {
+            JOptionPane.showMessageDialog(view, "Đăng nhập thành công!", "Thành công", JOptionPane.INFORMATION_MESSAGE);
+
+            // ✅ Khi đăng nhập thành công → Gọi callback
+            if (onLoginSuccess != null) {
+                onLoginSuccess.run();
+            }
+
+        } else {
+            JOptionPane.showMessageDialog(view, "Sai tài khoản hoặc mật khẩu!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+}
+>>>>>>> origin/Nam

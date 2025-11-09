@@ -1,3 +1,34 @@
+<<<<<<< HEAD
+=======
+///*
+// * PTIT OOP
+// * QUAN LY PHONG KHAM RANG
+// */
+//package com.ptit.dental.view;
+//
+//import com.ptit.dental.base.BaseView;
+//
+///**
+// *
+// * @author Administrator
+// */
+//import javax.swing.*;
+//import java.awt.*;
+//
+//public class LoginView extends BaseView {
+//    public JTextField txtUser = new JTextField(10);
+//    public JButton btnLogin = new JButton("Login");
+//
+//    public LoginView() {
+//        super("Login");
+//        setLayout(new FlowLayout());
+//        add(new JLabel("Username:"));
+//        add(txtUser);
+//        add(btnLogin);
+//    }
+//}
+
+>>>>>>> origin/Nam
 package com.ptit.dental.view;
 
 import com.ptit.dental.base.BaseView;
@@ -20,10 +51,17 @@ public class LoginView extends BaseView {
         setSize(650, 450);
         setLocationRelativeTo(null);
 
+<<<<<<< HEAD
         // Ảnh nền
         Image bgImage = new ImageIcon(
                 getClass().getResource("/Blue and White Modern Dental Medical Presentation.png")
         ).getImage();
+=======
+        String imagePath = "/com/ptit/dental/image/";
+        // Ảnh nền
+//
+        Image bgImage = new ImageIcon(getClass().getResource(imagePath + "Blue and White Modern Dental Medical Presentation.png")).getImage();
+>>>>>>> origin/Nam
 
         JPanel backgroundPanel = new JPanel() {
             protected void paintComponent(Graphics g) {
@@ -51,7 +89,11 @@ public class LoginView extends BaseView {
         gbc.gridwidth = 1;
         gbc.gridy++;
         JLabel usernameLabel = new JLabel("Tên Người Dùng", SwingConstants.RIGHT);
+<<<<<<< HEAD
         usernameLabel.setForeground(Color.WHITE); 
+=======
+        usernameLabel.setForeground(Color.WHITE);
+>>>>>>> origin/Nam
         formPanel.add(usernameLabel, gbc);
 
         gbc.gridx = 1;
@@ -62,7 +104,11 @@ public class LoginView extends BaseView {
         gbc.gridy++;
         gbc.gridx = 0;
         JLabel passwordLabel = new JLabel("Mật Khẩu", SwingConstants.RIGHT);
+<<<<<<< HEAD
         passwordLabel.setForeground(Color.WHITE); 
+=======
+        passwordLabel.setForeground(Color.WHITE);
+>>>>>>> origin/Nam
         formPanel.add(passwordLabel, gbc);
 
         gbc.gridx = 1;
@@ -74,7 +120,11 @@ public class LoginView extends BaseView {
         gbc.gridx = 1;
         showPasswordCheck = new JCheckBox("Hiển thị mật khẩu");
         showPasswordCheck.setOpaque(false);
+<<<<<<< HEAD
         showPasswordCheck.setForeground(Color.WHITE); 
+=======
+        showPasswordCheck.setForeground(Color.WHITE);
+>>>>>>> origin/Nam
         formPanel.add(showPasswordCheck, gbc);
 
         // Login button

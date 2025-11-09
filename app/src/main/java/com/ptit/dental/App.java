@@ -3,6 +3,7 @@
 // */
 //package com.ptit.dental;
 //
+<<<<<<< HEAD
 //
 //import com.ptit.dental.view.CleanLoginView;
 //
@@ -40,6 +41,42 @@
 //            }
 //            // Sử dụng CleanLoginFrame không có lỗi encoding
 //            new CleanLoginView().setVisible(true);
+=======
+//import com.ptit.dental.controller.*;
+//import com.ptit.dental.model.dao.StaffDAO;
+//import com.ptit.dental.model.entity.Staff;
+//import com.ptit.dental.model.service.AuthService;
+//import com.ptit.dental.utils.Database;
+//import com.ptit.dental.utils.Injector;
+//import com.ptit.dental.view.*;
+//
+//import java.sql.Connection;
+//import java.sql.ResultSet;
+//import java.sql.SQLException;
+//import java.sql.Statement;
+//
+//
+//
+//public class App {
+//   public static void main(String[] args) throws SQLException {
+//
+//        Database db = Database.getInstance();
+//
+//        Connection conn = db.getConnection();
+//
+//        StaffDAO staffDAO = new StaffDAO(conn);
+//
+//        Injector.register(StaffDAO.class, staffDAO);
+//        Injector.register(AuthService.class, new AuthService(staffDAO));
+//
+//        java.awt.EventQueue.invokeLater(() -> {
+//        //    new LoginController(new LoginView()).show();
+//            new PatientManagementController(new PatientManagementView()).show();
+//           new InvoiceController(new InvoiceView()).show();
+//           new SearchingInvoiceController(new SearchingInvoice()).show();
+//        new MedicineListController(new MedicineListView()).show();
+//            new MainDashboardController(new MainDashboardView());
+>>>>>>> origin/Nam
 //        });
 //   }
 //}
@@ -61,6 +98,7 @@ import com.ptit.dental.view.LoginView;
 =======
 import com.ptit.dental.view.*;
 
+<<<<<<< HEAD
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -68,16 +106,23 @@ import java.sql.Statement;
 
 >>>>>>> origin/Binh
 
+=======
+>>>>>>> origin/Nam
 import javax.swing.*;
 
 public class App {
     public static void main(String[] args) {
 
+<<<<<<< HEAD
         // === 1. Khởi tạo database và service trên thread riêng ===
+=======
+        // === 1️⃣ Khởi tạo database & service trên thread riêng ===
+>>>>>>> origin/Nam
         Thread dbInitThread = new Thread(() -> {
             try {
                 Database db = Database.getInstance();
                 java.sql.Connection conn = db.getConnection();
+<<<<<<< HEAD
                 StaffDAO staffDAO = new StaffDAO(conn);
                 AuthService authService = new AuthService(staffDAO);
 
@@ -107,6 +152,23 @@ public class App {
         dbInitThread.start();
 
         // === 2. Khởi tạo UI ===
+=======
+
+                StaffDAO staffDAO = new StaffDAO(conn);
+                AuthService authService = new AuthService(staffDAO);
+
+                Injector.register(StaffDAO.class, staffDAO);
+                Injector.register(AuthService.class, authService);
+
+                System.out.println("✅ Database initialized successfully");
+            } catch (Exception e) {
+                System.err.println("⚠️ Database initialization failed: " + e.getMessage());
+            }
+        });
+        dbInitThread.start();
+
+        // === 2️⃣ Khởi tạo UI với giao diện Nimbus ===
+>>>>>>> origin/Nam
         SwingUtilities.invokeLater(() -> {
             try {
                 UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
@@ -114,10 +176,31 @@ public class App {
                 System.err.println("Could not set Nimbus Look and Feel: " + e.getMessage());
             }
 
+<<<<<<< HEAD
             // Sử dụng Controller đúng mô hình MVC
             LoginView loginView = new LoginView();
             LoginController controller = new LoginController(loginView);
             controller.show();
+=======
+            // === 3️⃣ Mở màn hình đăng nhập (LoginView + Controller) ===
+            LoginView loginView = new LoginView();
+            LoginController loginController = new LoginController(loginView);
+
+            // Khi đăng nhập thành công => mở Dashboard (Main view)
+            loginController.setOnLoginSuccess(() -> {
+                // Gọi Dashboard chính
+                new MainDashboardController(new MainDashboardView()).show();
+
+                // Nếu muốn test thêm các module khác, có thể bật:
+                // new PatientManagementController(new PatientManagementView()).show();
+                // new MedicineListController(new MedicineListView()).show();
+                // new InvoiceController(new InvoiceView()).show();
+                // new SearchingInvoiceController(new SearchingInvoice()).show();
+            });
+
+            // Hiển thị form đăng nhập
+            loginController.show();
+>>>>>>> origin/Nam
         });
     }
 }
