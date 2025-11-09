@@ -46,13 +46,27 @@
 
 package com.ptit.dental;
 
+<<<<<<< HEAD
 
 import com.ptit.dental.controller.LoginController;
+=======
+import com.ptit.dental.controller.*;
+>>>>>>> origin/Binh
 import com.ptit.dental.model.dao.StaffDAO;
 import com.ptit.dental.model.service.AuthService;
 import com.ptit.dental.utils.Database;
 import com.ptit.dental.utils.Injector;
+<<<<<<< HEAD
 import com.ptit.dental.view.LoginView;
+=======
+import com.ptit.dental.view.*;
+
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+>>>>>>> origin/Binh
 
 import javax.swing.*;
 
@@ -70,10 +84,25 @@ public class App {
                 Injector.register(StaffDAO.class, staffDAO);
                 Injector.register(AuthService.class, authService);
 
+<<<<<<< HEAD
                 System.out.println("✅ Database initialized successfully");
             } catch (Exception e) {
                 System.err.println("⚠️ Database initialization failed: " + e.getMessage());
             }
+=======
+        StaffDAO staffDAO = new StaffDAO(conn);
+
+        Injector.register(StaffDAO.class, staffDAO);
+        Injector.register(AuthService.class, new AuthService(staffDAO));
+
+        java.awt.EventQueue.invokeLater(() -> {
+            //new LoginController(new LoginView()).show();
+//            new MedicalRecordController(new  MedicalRecordView()).show();
+           new InvoiceController(new InvoiceView()).show();
+//           new SearchingInvoiceController(new SearchingInvoice()).show();
+//            new MedicineListController(new MedicineListView()).show();
+//
+>>>>>>> origin/Binh
         });
         dbInitThread.start();
 

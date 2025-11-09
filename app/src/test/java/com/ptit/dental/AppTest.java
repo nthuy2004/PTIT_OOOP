@@ -4,11 +4,14 @@
 package com.ptit.dental;
 
 import org.junit.jupiter.api.Test;
+
+import com.ptit.dental.utils.Database;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class AppTest {
     @Test void appHasAGreeting() {
         App classUnderTest = new App();
-        assertNotNull(classUnderTest.getGreeting(), "app should have a greeting");
+        assertNotNull(Database.getInstance(), "app should have a database connection");
     }
 }
