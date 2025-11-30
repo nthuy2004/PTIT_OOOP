@@ -153,7 +153,7 @@ public class DrugDAO {
     }
 
     public void insert(Drug medicine) throws SQLException {
-        String sql = "INSERT INTO drugs (name, type, desc, quantity, price) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO drugs (name, type, `desc`, quantity, price) VALUES (?, ?, ?, ?, ?)";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, medicine.getName());
             ps.setInt(2, 1); // Default type
@@ -168,7 +168,7 @@ public class DrugDAO {
     }
 
     public boolean update(Drug medicine) throws SQLException {
-        String sql = "UPDATE drugs SET name = ?, desc = ?, quantity = ?, price = ? WHERE id = ?";
+        String sql = "UPDATE drugs SET name = ?, `desc` = ?, quantity = ?, price = ? WHERE id = ?";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, medicine.getName());
             // Store importDate and expiryDate in desc field

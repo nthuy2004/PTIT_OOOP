@@ -57,7 +57,7 @@ public class MainDashboardView extends BaseView {
         contentPanel.setBorder(BorderFactory.createEmptyBorder(20, 30, 20, 30));
         contentPanel.setBackground(new Color(245, 245, 245));
 
-        contentPanel.add(createMenuButton("Viện phí", imagePath + "employee.png"));
+        contentPanel.add(createMenuButton("Lịch hẹn", imagePath + "employee.png"));
         contentPanel.add(createMenuButton("Thuốc", imagePath + "medicine.png"));
         contentPanel.add(createMenuButton("Bệnh nhân", imagePath + "patientdetals.png"));
         contentPanel.add(createMenuButton("Hóa đơn", imagePath + "invoice.png"));
@@ -121,8 +121,10 @@ public class MainDashboardView extends BaseView {
                 new com.ptit.dental.controller.PatientManagementController(patientView);
                 patientView.showView();
                 break;
-            case "Viện phí":
-                new SearchingInvoice().showView();
+            case "Lịch hẹn":
+                SearchingAppointment searchingAppointment = new SearchingAppointment();
+                new com.ptit.dental.controller.SearchingAppointmentController(searchingAppointment);
+                searchingAppointment.showView();
                 break;
             case "Thuốc":
                 DrugView medicineView = new DrugView();

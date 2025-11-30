@@ -83,31 +83,31 @@ public class App {
             }
 
             // === 3️⃣ Mở màn hình đăng nhập (LoginView + Controller) ===
-            LoginView loginView = new LoginView();
-            LoginController loginController = new LoginController(loginView);
+       //     LoginView loginView = new LoginView();
+          //  LoginController loginController = new LoginController(loginView);
 
             // Khi đăng nhập thành công => mở Dashboard (Main view)
-//          loginController.setOnLoginSuccess(() -> {
-//              // Gọi Dashboard chính
-//               new MainDashboardController(new MainDashboardView()).show();
-//
-//               // Nếu muốn test thêm các module khác, có thể bật:
-//               new PatientManagementController(new PatientManagementView()).show();
-//               new DrugController(new DrugView()).show();
-//               new InvoiceController(new InvoiceView()).show();
-//               new SearchingInvoiceController(new SearchingInvoice()).show();
-//           });
-//
-//            // Hiển thị form đăng nhập
-//            loginController.show();
+            // loginController.setOnLoginSuccess(() -> {
+            // // Gọi Dashboard chính
+            // new MainDashboardController(new MainDashboardView()).show();
+            //
+            // // Nếu muốn test thêm các module khác, có thể bật:
+            // new PatientManagementController(new PatientManagementView()).show();
+            // new DrugController(new DrugView()).show();
+            // new InvoiceController(new InvoiceView()).show();
+            // new SearchingInvoiceController(new SearchingInvoice()).show();
+            // });
+            //
+            // // Hiển thị form đăng nhập
+          //   loginController.show();
 
             new MainDashboardController(new MainDashboardView()).show();
-//
-//               // Nếu muốn test thêm các module khác, có thể bật:
-               new PatientManagementController(new PatientManagementView()).show();
-               new DrugController(new DrugView()).show();
-               new InvoiceController(new InvoiceView()).show();
-               new SearchingInvoiceController(new SearchingInvoice()).show();
+            //
+            // // Nếu muốn test thêm các module khác, có thể bật:
+            // new PatientManagementController(new PatientManagementView()).show();
+            // new DrugController(new DrugView()).show();
+            // new InvoiceController(new InvoiceView()).show();
+            // new SearchingInvoiceController(new SearchingInvoice()).show();
 
         });
     }

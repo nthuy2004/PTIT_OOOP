@@ -3,13 +3,14 @@
  * QUAN LY PHONG KHAM RANG
  */
 package com.ptit.dental.model.entity;
+
 import java.time.LocalDateTime;
 import java.util.List;
+
 /**
  *
  * @author Administrator
  */
-
 
 public class MedicalRecord {
     public Integer id;
@@ -22,12 +23,12 @@ public class MedicalRecord {
     public List<ServiceUsage> serviceUsages;
 
     public MedicalRecord(Integer id,
-                         Patient patient,
-                         Staff doctor,
-                         String diagnostic,
-                         String plan,
-                         String status,
-                         LocalDateTime time) {
+            Patient patient,
+            Staff doctor,
+            String diagnostic,
+            String plan,
+            String status,
+            LocalDateTime time) {
         this.id = id;
         this.patient = patient;
         this.doctor = doctor;
