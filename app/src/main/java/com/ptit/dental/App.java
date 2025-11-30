@@ -87,19 +87,28 @@ public class App {
             LoginController loginController = new LoginController(loginView);
 
             // Khi đăng nhập thành công => mở Dashboard (Main view)
-            loginController.setOnLoginSuccess(() -> {
-                // Gọi Dashboard chính
-                new MainDashboardController(new MainDashboardView()).show();
+//          loginController.setOnLoginSuccess(() -> {
+//              // Gọi Dashboard chính
+//               new MainDashboardController(new MainDashboardView()).show();
+//
+//               // Nếu muốn test thêm các module khác, có thể bật:
+//               new PatientManagementController(new PatientManagementView()).show();
+//               new DrugController(new DrugView()).show();
+//               new InvoiceController(new InvoiceView()).show();
+//               new SearchingInvoiceController(new SearchingInvoice()).show();
+//           });
+//
+//            // Hiển thị form đăng nhập
+//            loginController.show();
 
-                // Nếu muốn test thêm các module khác, có thể bật:
-                // new PatientManagementController(new PatientManagementView()).show();
-                // new MedicineListController(new MedicineListView()).show();
-                // new InvoiceController(new InvoiceView()).show();
-                // new SearchingInvoiceController(new SearchingInvoice()).show();
-            });
+            new MainDashboardController(new MainDashboardView()).show();
+//
+//               // Nếu muốn test thêm các module khác, có thể bật:
+               new PatientManagementController(new PatientManagementView()).show();
+               new DrugController(new DrugView()).show();
+               new InvoiceController(new InvoiceView()).show();
+               new SearchingInvoiceController(new SearchingInvoice()).show();
 
-            // Hiển thị form đăng nhập
-            loginController.show();
         });
     }
 }

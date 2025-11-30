@@ -58,9 +58,7 @@ public class MainDashboardView extends BaseView {
         contentPanel.setBackground(new Color(245, 245, 245));
 
         contentPanel.add(createMenuButton("Viện phí", imagePath + "employee.png"));
-
         contentPanel.add(createMenuButton("Thuốc", imagePath + "medicine.png"));
-
         contentPanel.add(createMenuButton("Bệnh nhân", imagePath + "patientdetals.png"));
         contentPanel.add(createMenuButton("Hóa đơn", imagePath + "invoice.png"));
 
@@ -69,30 +67,7 @@ public class MainDashboardView extends BaseView {
         setVisible(true);
     }
 
-//    private JPanel createMenuButton(String title, String iconPath) {
-//        JPanel panel = new JPanel(new BorderLayout());
-//        panel.setBackground(Color.WHITE);
-//        panel.setBorder(BorderFactory.createLineBorder(new Color(230, 230, 230), 1, true));
-//
-//        JLabel icon = new JLabel(new ImageIcon(getClass().getResource(iconPath)), JLabel.CENTER);
-//        JLabel label = new JLabel(title, JLabel.CENTER);
-//        label.setFont(new Font("SansSerif", Font.PLAIN, 18));
-//
-//        panel.add(icon, BorderLayout.CENTER);
-//        panel.add(label, BorderLayout.SOUTH);
-//
-//        panel.addMouseListener(new MouseAdapter() {
-//            public void mouseEntered(MouseEvent e) {
-//                panel.setBackground(new Color(240, 240, 240));
-//            }
-//
-//            public void mouseExited(MouseEvent e) {
-//                panel.setBackground(Color.WHITE);
-//            }
-//        });
-//
-//        return panel;
-//    }
+
 
     private JPanel createMenuButton(String title, String iconPath) {
         JPanel panel = new JPanel(new BorderLayout());
@@ -146,13 +121,13 @@ public class MainDashboardView extends BaseView {
                 new com.ptit.dental.controller.PatientManagementController(patientView);
                 patientView.showView();
                 break;
-            case "Thuốc":
-                MedicineListView medicineView = new MedicineListView();
-                new com.ptit.dental.controller.MedicineListController(medicineView);
-                medicineView.showView();
-                break;
             case "Viện phí":
                 new SearchingInvoice().showView();
+                break;
+            case "Thuốc":
+                DrugView medicineView = new DrugView();
+                new com.ptit.dental.controller.DrugController(medicineView);
+                medicineView.showView();
                 break;
             case "Hóa đơn":
                 InvoiceView invoiceView = new InvoiceView();

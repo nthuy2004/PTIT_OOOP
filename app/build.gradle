@@ -30,8 +30,12 @@ dependencies {
 // Apply a specific Java toolchain to ease working on different environments.
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(25)
+        languageVersion = JavaLanguageVersion.of(17)  // Use Java 17 LTS for better compatibility
     }
+    
+    // Target Java 11+ for wider compatibility
+    targetCompatibility = JavaVersion.VERSION_11
+    sourceCompatibility = JavaVersion.VERSION_11
 }
 
 application {
@@ -49,6 +53,43 @@ sourceSets {
             srcDirs = ['src/main/java']
             includes = ['**/*.png']
         }
+    }
+}
+
+// Ensure Java source files are compiled using UTF-8 to support Vietnamese characters
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+// Create a fat JAR with all dependencies to prevent LinkageError when running standalone
+jar {
+    duplicatesStrategy = 'exclude'
+    manifest {
+        attributes(
+            'Main-Class': 'com.ptit.dental.App',
+            'Implementation-Title': project.name,
+            'Implementation-Version': project.version
+        )
+    }
+    
+    // Include all dependencies in the JAR
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
+
+// Task to create a distribution JAR with all dependencies
+task fatJar(type: Jar) {
+    duplicatesStrategy = 'exclude'
+    archiveClassifier.set('fat')
+    manifest {
+        attributes(
+            'Main-Class': 'com.ptit.dental.App'
+        )
+    }
+    from sourceSets.main.output
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
     }
 }
 

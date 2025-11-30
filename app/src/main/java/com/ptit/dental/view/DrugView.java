@@ -1,12 +1,14 @@
 package com.ptit.dental.view;
 
+
+
 import com.ptit.dental.base.BaseView;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 
-public class MedicineListView extends BaseView {
+public class DrugView extends BaseView {
     private JTextField searchField;
     private JButton searchButton;
     private JTable medicineTable;
@@ -16,7 +18,7 @@ public class MedicineListView extends BaseView {
     private JButton editButton;
     private JButton btnHome;
 
-    public MedicineListView() {
+    public DrugView() {
         initComponents();
         setupLayout();
     }
@@ -137,10 +139,10 @@ public class MedicineListView extends BaseView {
     }
 
     // Method to add medicine to table
-    public void addMedicineToTable(String id, String name, String importDate, 
-                                 String expiryDate, double price, int quantity) {
+    public void addMedicineToTable(String id, String name, String importDate,
+                                   String expiryDate, double price, int quantity) {
         DefaultTableModel model = (DefaultTableModel) medicineTable.getModel();
-        model.addRow(new Object[]{id, name, importDate, expiryDate, 
-                                String.format("%.2f", price), quantity});
+        model.addRow(new Object[]{id, name, importDate, expiryDate,
+                String.format("%.2f", price), quantity});
     }
 }

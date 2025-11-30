@@ -10,7 +10,8 @@ import com.ptit.dental.utils.Database;
 import static org.junit.jupiter.api.Assertions.*;
 
 class AppTest {
-    @Test void appHasAGreeting() {
+    @Test
+    void appHasAGreeting() throws Exception {
         App classUnderTest = new App();
         assertNotNull(Database.getInstance(), "app should have a database connection");
     }

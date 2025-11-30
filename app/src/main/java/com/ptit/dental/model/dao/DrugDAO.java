@@ -1,10 +1,11 @@
+package com.ptit.dental.model.dao;
+
 /*
  * PTIT OOP
  * QUAN LY PHONG KHAM RANG
  */
-package com.ptit.dental.model.dao;
 
-import com.ptit.dental.model.entity.Medicine;
+import com.ptit.dental.model.entity.Drug;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -19,27 +20,27 @@ import java.util.List;
  *
  * @author Administrator
  */
-public class MedicineDAO {
+public class DrugDAO {
 
     private Connection conn;
     private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
-    public MedicineDAO(Connection conn) {
+    public DrugDAO(Connection conn) {
         this.conn = conn;
     }
 
-    public Medicine getById(int id) throws SQLException {
+    public Drug getById(int id) throws SQLException {
         String sql = "SELECT * FROM drugs WHERE id = ?";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, id);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    Medicine m = new Medicine();
+                    Drug m = new Drug();
                     m.setId(rs.getInt("id"));
                     m.setName(rs.getString("name"));
                     m.setPrice(rs.getDouble("price"));
                     m.setQuantity(rs.getInt("quantity"));
-                    
+
                     // Parse importDate and expiryDate from desc field (format: "importDate;expiryDate")
                     String desc = rs.getString("desc");
                     if (desc != null && !desc.isEmpty() && desc.contains(";")) {
@@ -61,7 +62,7 @@ public class MedicineDAO {
                         m.setImportDate(new Date());
                         m.setExpiryDate(new Date());
                     }
-                    
+
                     return m;
                 }
             }
@@ -69,19 +70,19 @@ public class MedicineDAO {
         return null;
     }
 
-    public List<Medicine> getAll() throws SQLException {
+    public List<Drug> getAll() throws SQLException {
         String sql = "SELECT * FROM drugs ORDER BY id DESC";
-        List<Medicine> medicineList = new ArrayList<>();
+        List<Drug> medicineList = new ArrayList<>();
 
         try (PreparedStatement ps = conn.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
-                Medicine m = new Medicine();
+                Drug m = new Drug();
                 m.setId(rs.getInt("id"));
                 m.setName(rs.getString("name"));
                 m.setPrice(rs.getDouble("price"));
                 m.setQuantity(rs.getInt("quantity"));
-                
+
                 // Parse importDate and expiryDate from desc field
                 String desc = rs.getString("desc");
                 if (desc != null && !desc.isEmpty() && desc.contains(";")) {
@@ -102,27 +103,27 @@ public class MedicineDAO {
                     m.setImportDate(new Date());
                     m.setExpiryDate(new Date());
                 }
-                
+
                 medicineList.add(m);
             }
         }
         return medicineList;
     }
 
-    public List<Medicine> searchByName(String keyword) throws SQLException {
+    public List<Drug> searchByName(String keyword) throws SQLException {
         String sql = "SELECT * FROM drugs WHERE name LIKE ? ORDER BY id DESC";
-        List<Medicine> medicineList = new ArrayList<>();
+        List<Drug> medicineList = new ArrayList<>();
 
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, "%" + keyword + "%");
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
-                    Medicine m = new Medicine();
+                    Drug m = new Drug();
                     m.setId(rs.getInt("id"));
                     m.setName(rs.getString("name"));
                     m.setPrice(rs.getDouble("price"));
                     m.setQuantity(rs.getInt("quantity"));
-                    
+
                     // Parse importDate and expiryDate from desc field
                     String desc = rs.getString("desc");
                     if (desc != null && !desc.isEmpty() && desc.contains(";")) {
@@ -143,7 +144,7 @@ public class MedicineDAO {
                         m.setImportDate(new Date());
                         m.setExpiryDate(new Date());
                     }
-                    
+
                     medicineList.add(m);
                 }
             }
@@ -151,14 +152,14 @@ public class MedicineDAO {
         return medicineList;
     }
 
-    public void insert(Medicine medicine) throws SQLException {
+    public void insert(Drug medicine) throws SQLException {
         String sql = "INSERT INTO drugs (name, type, desc, quantity, price) VALUES (?, ?, ?, ?, ?)";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, medicine.getName());
             ps.setInt(2, 1); // Default type
             // Store importDate and expiryDate in desc field as "importDate;expiryDate"
-            String desc = dateFormat.format(medicine.getImportDate()) + ";" + 
-                         dateFormat.format(medicine.getExpiryDate());
+            String desc = dateFormat.format(medicine.getImportDate()) + ";" +
+                    dateFormat.format(medicine.getExpiryDate());
             ps.setString(3, desc);
             ps.setInt(4, medicine.getQuantity());
             ps.setDouble(5, medicine.getPrice());
@@ -166,13 +167,13 @@ public class MedicineDAO {
         }
     }
 
-    public boolean update(Medicine medicine) throws SQLException {
+    public boolean update(Drug medicine) throws SQLException {
         String sql = "UPDATE drugs SET name = ?, desc = ?, quantity = ?, price = ? WHERE id = ?";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, medicine.getName());
             // Store importDate and expiryDate in desc field
-            String desc = dateFormat.format(medicine.getImportDate()) + ";" + 
-                         dateFormat.format(medicine.getExpiryDate());
+            String desc = dateFormat.format(medicine.getImportDate()) + ";" +
+                    dateFormat.format(medicine.getExpiryDate());
             ps.setString(2, desc);
             ps.setInt(3, medicine.getQuantity());
             ps.setDouble(4, medicine.getPrice());

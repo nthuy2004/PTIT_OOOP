@@ -1,8 +1,10 @@
+package com.ptit.dental.model.entity;
+
 /*
  * PTIT OOP
  * QUAN LY PHONG KHAM RANG
  */
-package com.ptit.dental.model.entity;
+
 
 import java.util.Date;
 
@@ -10,7 +12,7 @@ import java.util.Date;
  *
  * @author Administrator
  */
-public class Medicine {
+public class Drug {
     private int id;
     private String name;
     private Date importDate;
@@ -18,10 +20,10 @@ public class Medicine {
     private double price;
     private int quantity;
 
-    public Medicine() {
+    public Drug() {
     }
 
-    public Medicine(int id, String name, Date importDate, Date expiryDate, double price, int quantity) {
+    public Drug(int id, String name, Date importDate, Date expiryDate, double price, int quantity) {
         this.id = id;
         this.name = name;
         this.importDate = importDate;

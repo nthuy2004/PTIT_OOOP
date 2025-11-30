@@ -1,13 +1,15 @@
 package com.ptit.dental.view;
 
-import com.ptit.dental.model.entity.Medicine;
+
+
+import com.ptit.dental.model.entity.Drug;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.Date;
 import com.toedter.calendar.JDateChooser;
 
-public class MedicineFormDialog extends JDialog {
+public class DrugFormDialog extends JDialog {
     private JTextField txtName;
     private JDateChooser importDateChooser;
     private JDateChooser expiryDateChooser;
@@ -15,20 +17,20 @@ public class MedicineFormDialog extends JDialog {
     private JTextField txtQuantity;
     private JButton btnSave;
     private JButton btnCancel;
-    
-    private Medicine medicine;
+
+    private Drug medicine;
     private boolean saved = false;
 
-    public MedicineFormDialog(JFrame parent, Medicine medicine) {
+    public DrugFormDialog(JFrame parent, Drug medicine) {
         super(parent, medicine == null ? "Thêm thuốc mới" : "Chỉnh sửa thuốc", true);
         this.medicine = medicine;
         initComponents();
         setupLayout();
-        
+
         if (medicine != null) {
             loadMedicineData();
         }
-        
+
         setLocationRelativeTo(parent);
     }
 
@@ -37,13 +39,13 @@ public class MedicineFormDialog extends JDialog {
         importDateChooser = new JDateChooser();
         importDateChooser.setDateFormatString("dd/MM/yyyy");
         importDateChooser.setDate(new Date());
-        
+
         expiryDateChooser = new JDateChooser();
         expiryDateChooser.setDateFormatString("dd/MM/yyyy");
-        
+
         txtPrice = new JTextField(20);
         txtQuantity = new JTextField(20);
-        
+
         btnSave = new JButton("Lưu");
         btnSave.setBackground(new Color(76, 175, 80));
         btnSave.setForeground(Color.WHITE);
@@ -53,7 +55,7 @@ public class MedicineFormDialog extends JDialog {
                 dispose();
             }
         });
-        
+
         btnCancel = new JButton("Hủy");
         btnCancel.addActionListener(e -> dispose());
     }
@@ -61,12 +63,12 @@ public class MedicineFormDialog extends JDialog {
     private void setupLayout() {
         setLayout(new BorderLayout());
         setSize(450, 300);
-        
+
         JPanel formPanel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 10, 5, 10);
         gbc.anchor = GridBagConstraints.WEST;
-        
+
         // Tên thuốc
         gbc.gridx = 0; gbc.gridy = 0;
         formPanel.add(new JLabel("Tên thuốc:"), gbc);
@@ -74,7 +76,7 @@ public class MedicineFormDialog extends JDialog {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.weightx = 1.0;
         formPanel.add(txtName, gbc);
-        
+
         // Ngày nhập
         gbc.gridx = 0; gbc.gridy = 1;
         gbc.fill = GridBagConstraints.NONE;
@@ -84,7 +86,7 @@ public class MedicineFormDialog extends JDialog {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.weightx = 1.0;
         formPanel.add(importDateChooser, gbc);
-        
+
         // Ngày hết hạn
         gbc.gridx = 0; gbc.gridy = 2;
         gbc.fill = GridBagConstraints.NONE;
@@ -94,7 +96,7 @@ public class MedicineFormDialog extends JDialog {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.weightx = 1.0;
         formPanel.add(expiryDateChooser, gbc);
-        
+
         // Giá
         gbc.gridx = 0; gbc.gridy = 3;
         gbc.fill = GridBagConstraints.NONE;
@@ -104,7 +106,7 @@ public class MedicineFormDialog extends JDialog {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.weightx = 1.0;
         formPanel.add(txtPrice, gbc);
-        
+
         // Số lượng
         gbc.gridx = 0; gbc.gridy = 4;
         gbc.fill = GridBagConstraints.NONE;
@@ -114,9 +116,9 @@ public class MedicineFormDialog extends JDialog {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.weightx = 1.0;
         formPanel.add(txtQuantity, gbc);
-        
+
         add(formPanel, BorderLayout.CENTER);
-        
+
         // Buttons
         JPanel btnPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         btnPanel.add(btnSave);
@@ -170,18 +172,18 @@ public class MedicineFormDialog extends JDialog {
         return true;
     }
 
-    public Medicine getMedicine() {
+    public Drug getMedicine() {
         if (!saved) {
             return null;
         }
-        
-        Medicine m = medicine != null ? medicine : new Medicine();
+
+        Drug m = medicine != null ? medicine : new Drug();
         m.setName(txtName.getText().trim());
         m.setImportDate(importDateChooser.getDate());
         m.setExpiryDate(expiryDateChooser.getDate());
         m.setPrice(Double.parseDouble(txtPrice.getText().trim()));
         m.setQuantity(Integer.parseInt(txtQuantity.getText().trim()));
-        
+
         return m;
     }
 
