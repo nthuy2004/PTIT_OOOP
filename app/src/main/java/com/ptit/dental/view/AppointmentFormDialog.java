@@ -55,7 +55,7 @@ public class AppointmentFormDialog extends JDialog {
         form.add(tfService);
 
         form.add(new JLabel("Ghi chú:"));
-        taNote = new JTextArea(3, 20);
+        taNote = new JTextArea(5, 2);
         form.add(new JScrollPane(taNote));
 
         add(form, BorderLayout.CENTER);

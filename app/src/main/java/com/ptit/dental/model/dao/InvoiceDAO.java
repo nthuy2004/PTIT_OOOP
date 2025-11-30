@@ -284,11 +284,14 @@ package com.ptit.dental.model.dao;
 
 import com.ptit.dental.model.entity.Invoice;
 import com.ptit.dental.model.entity.InvoiceItem;
+import com.ptit.dental.model.entity.MedicalRecord;
+import com.ptit.dental.model.entity.Patient;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -296,22 +299,30 @@ import java.util.List;
 public class InvoiceDAO {
 
     private final Connection connection;
+    private MedicalRecordDAO medicalRecordDAO;
+    private PatientDAO patientDAO;
 
     public InvoiceDAO(Connection connection) {
         this.connection = connection;
+        this.medicalRecordDAO = new MedicalRecordDAO(connection);
+        this.patientDAO = new PatientDAO(connection);
     }
 
     // ===========================================================
     // CREATE INVOICE
     // ===========================================================
     public int createInvoice(Invoice invoice) throws SQLException {
-        String sql = "INSERT INTO invoice (record_id, created_time, total) VALUES (?, ?, ?)";
+        // Tìm hoặc tạo medical record cho patient
+        int recordId = getOrCreateMedicalRecord(invoice.getPatientId());
+        
+        String sql = "INSERT INTO invoice (record_id, created_time, status, total) VALUES (?, ?, ?, ?)";
 
         try (PreparedStatement ps = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
 
-            ps.setInt(1, invoice.getPatientId());
+            ps.setInt(1, recordId); // Dùng medical record ID thay vì patient ID
             ps.setTimestamp(2, new java.sql.Timestamp(invoice.getCreatedDate().getTime()));
-            ps.setDouble(3, invoice.getTotal());
+            ps.setInt(3, 1); // Default status = 1 (đã thanh toán/active)
+            ps.setDouble(4, invoice.getTotal());
 
             ps.executeUpdate();
 
@@ -353,7 +364,9 @@ public class InvoiceDAO {
     // ===========================================================
     public List<Invoice> getAll() {
         List<Invoice> list = new ArrayList<>();
-        String sql = "SELECT * FROM invoice ORDER BY id DESC";
+        String sql = "SELECT i.*, mr.patient_id FROM invoice i " +
+                     "INNER JOIN medical_records mr ON i.record_id = mr.id " +
+                     "ORDER BY i.id DESC";
 
         try (PreparedStatement ps = connection.prepareStatement(sql);
                 ResultSet rs = ps.executeQuery()) {
@@ -361,7 +374,7 @@ public class InvoiceDAO {
             while (rs.next()) {
                 Invoice invoice = new Invoice();
                 invoice.setId(rs.getInt("id"));
-                invoice.setPatientId(rs.getInt("record_id"));
+                invoice.setPatientId(rs.getInt("patient_id")); // Lấy từ medical_records
                 invoice.setCreatedDate(new Date(rs.getTimestamp("created_time").getTime()));
                 invoice.setTotal(rs.getDouble("total"));
 
@@ -439,14 +452,17 @@ public class InvoiceDAO {
 
     // Compatibility wrappers for older controller code
     public Invoice getById(int id) throws SQLException {
-        String sql = "SELECT * FROM invoice WHERE id = ?";
+        String sql = "SELECT i.*, mr.patient_id FROM invoice i " +
+                     "INNER JOIN medical_records mr ON i.record_id = mr.id " +
+                     "WHERE i.id = ?";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setInt(1, id);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     Invoice invoice = new Invoice();
                     invoice.setId(rs.getInt("id"));
-                    invoice.setPatientId(rs.getInt("record_id"));
+                    // Lấy patient_id từ medical_records, không phải từ record_id
+                    invoice.setPatientId(rs.getInt("patient_id"));
                     invoice.setCreatedDate(new Date(rs.getTimestamp("created_time").getTime()));
                     invoice.setTotal(rs.getDouble("total"));
                     invoice.setItems(getInvoiceItems(invoice.getId()));
@@ -459,14 +475,47 @@ public class InvoiceDAO {
 
     public List<Invoice> searchByPatientName(String keyword) throws SQLException {
         List<Invoice> invoiceList = new ArrayList<>();
-        String sql = "SELECT i.* FROM invoice i INNER JOIN patients p ON i.record_id = p.id WHERE p.fullname LIKE ? ORDER BY i.id DESC";
+        String sql = "SELECT i.*, mr.patient_id FROM invoice i " +
+                     "INNER JOIN medical_records mr ON i.record_id = mr.id " +
+                     "INNER JOIN patients p ON mr.patient_id = p.id " +
+                     "WHERE p.fullname LIKE ? ORDER BY i.id DESC";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, "%" + keyword + "%");
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     Invoice invoice = new Invoice();
                     invoice.setId(rs.getInt("id"));
-                    invoice.setPatientId(rs.getInt("record_id"));
+                    invoice.setPatientId(rs.getInt("patient_id")); // Lấy từ medical_records
+                    invoice.setCreatedDate(new Date(rs.getTimestamp("created_time").getTime()));
+                    invoice.setTotal(rs.getDouble("total"));
+                    invoice.setItems(getInvoiceItems(invoice.getId()));
+                    invoiceList.add(invoice);
+                }
+            }
+        }
+        return invoiceList;
+    }
+    
+    /**
+     * Tìm kiếm hóa đơn theo tên bệnh nhân HOẶC tên dịch vụ
+     */
+    public List<Invoice> search(String keyword) throws SQLException {
+        List<Invoice> invoiceList = new ArrayList<>();
+        String sql = "SELECT DISTINCT i.*, mr.patient_id FROM invoice i " +
+                     "INNER JOIN medical_records mr ON i.record_id = mr.id " +
+                     "INNER JOIN patients p ON mr.patient_id = p.id " +
+                     "LEFT JOIN invoice_item ii ON i.id = ii.invoice_id " +
+                     "WHERE p.fullname LIKE ? OR ii.service_name LIKE ? " +
+                     "ORDER BY i.id DESC";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            String searchPattern = "%" + keyword + "%";
+            ps.setString(1, searchPattern); // Tìm theo tên bệnh nhân
+            ps.setString(2, searchPattern); // Tìm theo tên dịch vụ
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Invoice invoice = new Invoice();
+                    invoice.setId(rs.getInt("id"));
+                    invoice.setPatientId(rs.getInt("patient_id"));
                     invoice.setCreatedDate(new Date(rs.getTimestamp("created_time").getTime()));
                     invoice.setTotal(rs.getDouble("total"));
                     invoice.setItems(getInvoiceItems(invoice.getId()));
@@ -482,10 +531,34 @@ public class InvoiceDAO {
     }
 
     public boolean update(Invoice invoice) throws SQLException {
-        // Simple update implementation
+        // Lấy invoice hiện tại để so sánh patient
+        Invoice currentInvoice = getById(invoice.getId());
+        if (currentInvoice == null) {
+            throw new SQLException("Không tìm thấy hóa đơn với ID: " + invoice.getId());
+        }
+        
+        int recordId;
+        // Nếu patient thay đổi, cần tìm/tạo medical record mới
+        if (currentInvoice.getPatientId() != invoice.getPatientId()) {
+            recordId = getOrCreateMedicalRecord(invoice.getPatientId());
+        } else {
+            // Nếu patient không thay đổi, lấy record_id hiện tại
+            String getRecordIdSql = "SELECT record_id FROM invoice WHERE id = ?";
+            try (PreparedStatement ps = connection.prepareStatement(getRecordIdSql)) {
+                ps.setInt(1, invoice.getId());
+                try (ResultSet rs = ps.executeQuery()) {
+                    if (rs.next()) {
+                        recordId = rs.getInt("record_id");
+                    } else {
+                        throw new SQLException("Không tìm thấy record_id cho invoice ID: " + invoice.getId());
+                    }
+                }
+            }
+        }
+        
         String sql = "UPDATE invoice SET record_id = ?, created_time = ?, total = ? WHERE id = ?";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setInt(1, invoice.getPatientId());
+            ps.setInt(1, recordId); // Dùng medical record ID
             ps.setTimestamp(2, new java.sql.Timestamp(invoice.getCreatedDate().getTime()));
             ps.setDouble(3, invoice.getTotal());
             ps.setInt(4, invoice.getId());
@@ -502,5 +575,42 @@ public class InvoiceDAO {
 
     public boolean delete(int id) throws SQLException {
         return deleteInvoice(id);
+    }
+    
+    // ===========================================================
+    // HELPER: Get or Create Medical Record
+    // ===========================================================
+    /**
+     * Tìm medical record của patient, nếu không có thì tạo mới
+     * @param patientId ID của patient
+     * @return ID của medical record
+     */
+    private int getOrCreateMedicalRecord(int patientId) throws SQLException {
+        // Tìm medical record gần nhất của patient
+        List<MedicalRecord> records = medicalRecordDAO.getByPatientId(patientId);
+        
+        if (records != null && !records.isEmpty()) {
+            // Dùng medical record gần nhất
+            return records.get(0).getId();
+        }
+        
+        // Nếu không có, tạo medical record mới
+        Patient patient = patientDAO.getById(patientId);
+        if (patient == null) {
+            throw new SQLException("Patient không tồn tại với ID: " + patientId);
+        }
+        
+        MedicalRecord newRecord = new MedicalRecord(
+            null, // id sẽ được generate
+            patient,
+            null, // doctor
+            "Tự động tạo khi tạo hóa đơn", // diagnostic
+            "", // plan
+            "Đang điều trị", // status
+            LocalDateTime.now() // time
+        );
+        
+        medicalRecordDAO.insert(newRecord);
+        return newRecord.getId();
     }
 }

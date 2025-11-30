@@ -52,15 +52,21 @@ public class StaffDAO {
     }
 
     public Staff getByUsername(String username) throws SQLException {
-        String sql = "SELECT * FROM staff WHERE username = ?";
+        String sql = "SELECT * FROM staff WHERE LOWER(username) = LOWER(?)";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, username);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
+                    // Trim password để loại bỏ whitespace có thể có trong database
+                    String password = rs.getString("password");
+                    if (password != null) {
+                        password = password.trim();
+                    }
+                    
                     return new Staff(
                             rs.getInt("id"),
                             rs.getString("username"),
-                            rs.getString("password"),
+                            password,
                             rs.getString("email"),
                             rs.getString("fullname"),
                             rs.getDate("birthday"),

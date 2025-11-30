@@ -292,9 +292,18 @@ public class InvoiceController extends BaseController<InvoiceView> {
         }
 
         try {
-            List<Invoice> invoices = invoiceDAO.searchByPatientName(keyword);
+            // Tìm kiếm theo cả tên bệnh nhân và tên dịch vụ
+            List<Invoice> invoices = invoiceDAO.search(keyword);
             DefaultTableModel model = (DefaultTableModel) view.getInvoiceTable().getModel();
             model.setRowCount(0);
+
+            if (invoices.isEmpty()) {
+                JOptionPane.showMessageDialog(view, 
+                    "Không tìm thấy hóa đơn nào với từ khóa: \"" + keyword + "\"",
+                    "Thông báo", 
+                    JOptionPane.INFORMATION_MESSAGE);
+                return;
+            }
 
             for (Invoice invoice : invoices) {
                 Patient patient = patientDAO.getById(invoice.getPatientId());
@@ -310,6 +319,7 @@ public class InvoiceController extends BaseController<InvoiceView> {
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(view, "Lỗi tìm kiếm: " + e.getMessage(),
                     "Lỗi", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
         }
     }
 

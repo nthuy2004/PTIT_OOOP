@@ -132,6 +132,8 @@
 package com.ptit.dental.controller;
 
 import com.ptit.dental.base.BaseController;
+import com.ptit.dental.model.service.AuthService;
+import com.ptit.dental.utils.Injector;
 import com.ptit.dental.view.LoginView;
 
 import javax.swing.*;
@@ -162,20 +164,66 @@ public class LoginController extends BaseController<LoginView> {
         String password = new String(view.passwordField.getPassword()).trim();
 
         if (username.isEmpty() || password.isEmpty()) {
-            JOptionPane.showMessageDialog(view, "Hãy điền đầy đủ thông tin!", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(view, 
+                "Vui lòng điền đầy đủ tên đăng nhập và mật khẩu!", 
+                "Cảnh báo", 
+                JOptionPane.WARNING_MESSAGE);
             return;
         }
 
-        if (username.equalsIgnoreCase("admin") && password.equals("1")) {
-            JOptionPane.showMessageDialog(view, "Đăng nhập thành công!", "Thành công", JOptionPane.INFORMATION_MESSAGE);
-
-            // ✅ Khi đăng nhập thành công → Gọi callback
-            if (onLoginSuccess != null) {
-                onLoginSuccess.run();
+        try {
+            // Lấy AuthService từ Injector
+            AuthService authService = Injector.get(AuthService.class);
+            
+            if (authService == null) {
+                JOptionPane.showMessageDialog(view, 
+                    "Lỗi: Hệ thống chưa sẵn sàng!\n\n" +
+                    "Có thể do:\n" +
+                    "- Database chưa được khởi tạo\n" +
+                    "- Kết nối database thất bại\n" +
+                    "- Vui lòng kiểm tra lại và thử lại sau vài giây", 
+                    "Lỗi hệ thống", 
+                    JOptionPane.ERROR_MESSAGE);
+                return;
             }
 
-        } else {
-            JOptionPane.showMessageDialog(view, "Sai tài khoản hoặc mật khẩu!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            // Xác thực với database (sẽ throw exception nếu thất bại)
+            boolean loginSuccess = authService.Login(username, password);
+            
+            if (loginSuccess) {
+                // Nếu đến đây nghĩa là đăng nhập thành công
+                JOptionPane.showMessageDialog(view, 
+                    "Đăng nhập thành công!", 
+                    "Thành công", 
+                    JOptionPane.INFORMATION_MESSAGE);
+
+                // Đóng cửa sổ đăng nhập
+                view.dispose();
+
+                // ✅ Khi đăng nhập thành công → Gọi callback
+                if (onLoginSuccess != null) {
+                    onLoginSuccess.run();
+                }
+            }
+        } catch (Exception ex) {
+            // Hiển thị thông báo lỗi từ AuthService
+            String errorMessage = ex.getMessage();
+            if (errorMessage == null || errorMessage.isEmpty()) {
+                errorMessage = "Đã xảy ra lỗi không xác định khi đăng nhập";
+            }
+            
+            // In ra console để debug
+            System.err.println("Login error: " + errorMessage);
+            ex.printStackTrace();
+            
+            JOptionPane.showMessageDialog(view, 
+                "Đăng nhập thất bại!\n\n" + errorMessage + 
+                "\n\nVui lòng kiểm tra:\n" +
+                "- Tên đăng nhập có đúng không?\n" +
+                "- Mật khẩu có đúng không?\n" +
+                "- Database đã được kết nối chưa?", 
+                "Lỗi đăng nhập", 
+                JOptionPane.ERROR_MESSAGE);
         }
     }
 }

@@ -44,8 +44,9 @@ public class MainDashboardView extends BaseView {
         btnLogout.setIcon(new ImageIcon(getClass().getResource(imagePath + "LOGOUT.png")));
         btnLogout.setFocusPainted(false);
         btnLogout.setBackground(Color.WHITE);
-        btnLogout.setBorder(null);
         btnLogout.setFont(new Font("SansSerif", Font.BOLD, 14));
+
+        btnLogout.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
 
         headerPanel.add(logoPanel, BorderLayout.WEST);
         headerPanel.add(btnLogout, BorderLayout.EAST);

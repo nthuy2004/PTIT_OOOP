@@ -58,8 +58,13 @@ public class App {
         // === 1️⃣ Khởi tạo database & service trên thread riêng ===
         Thread dbInitThread = new Thread(() -> {
             try {
+                System.out.println("Đang khởi tạo kết nối database...");
                 Database db = Database.getInstance();
                 java.sql.Connection conn = db.getConnection();
+                
+                if (conn == null || conn.isClosed()) {
+                    throw new Exception("Kết nối database không hợp lệ");
+                }
 
                 StaffDAO staffDAO = new StaffDAO(conn);
                 AuthService authService = new AuthService(staffDAO);
@@ -67,12 +72,33 @@ public class App {
                 Injector.register(StaffDAO.class, staffDAO);
                 Injector.register(AuthService.class, authService);
 
-                System.out.println("✅ Database initialized successfully");
+                System.out.println("✅ Database và services đã được khởi tạo thành công");
             } catch (Exception e) {
-                System.err.println("⚠️ Database initialization failed: " + e.getMessage());
+                System.err.println("❌ Lỗi khởi tạo database: " + e.getMessage());
+                e.printStackTrace();
+                // Hiển thị thông báo lỗi cho người dùng
+                SwingUtilities.invokeLater(() -> {
+                    JOptionPane.showMessageDialog(null, 
+                        "Không thể kết nối đến cơ sở dữ liệu!\n\n" +
+                        "Vui lòng kiểm tra:\n" +
+                        "1. MySQL đã được cài đặt và đang chạy\n" +
+                        "2. Database 'dental' đã được tạo\n" +
+                        "3. Username và password đúng\n" +
+                        "4. Port 3306 đang mở\n\n" +
+                        "Chi tiết lỗi: " + e.getMessage(),
+                        "Lỗi kết nối Database", 
+                        JOptionPane.ERROR_MESSAGE);
+                });
             }
         });
         dbInitThread.start();
+        
+        // Đợi một chút để database khởi tạo
+        try {
+            dbInitThread.join(3000); // Đợi tối đa 3 giây
+        } catch (InterruptedException e) {
+            System.err.println("Thread bị gián đoạn");
+        }
 
         // === 2️⃣ Khởi tạo UI với giao diện Nimbus ===
         SwingUtilities.invokeLater(() -> {
@@ -83,32 +109,32 @@ public class App {
             }
 
             // === 3️⃣ Mở màn hình đăng nhập (LoginView + Controller) ===
-       //     LoginView loginView = new LoginView();
-          //  LoginController loginController = new LoginController(loginView);
+           LoginView loginView = new LoginView();
+           LoginController loginController = new LoginController(loginView);
 
             // Khi đăng nhập thành công => mở Dashboard (Main view)
-            // loginController.setOnLoginSuccess(() -> {
+             loginController.setOnLoginSuccess(() -> {
             // // Gọi Dashboard chính
-            // new MainDashboardController(new MainDashboardView()).show();
+    new MainDashboardController(new MainDashboardView()).show();
             //
             // // Nếu muốn test thêm các module khác, có thể bật:
             // new PatientManagementController(new PatientManagementView()).show();
-            // new DrugController(new DrugView()).show();
-            // new InvoiceController(new InvoiceView()).show();
-            // new SearchingInvoiceController(new SearchingInvoice()).show();
-            // });
+//             new DrugController(new DrugView()).show();
+//             new InvoiceController(new InvoiceView()).show();
+//             new SearchingInvoiceController(new SearchingInvoice()).show();
+             });
             //
             // // Hiển thị form đăng nhập
-          //   loginController.show();
+          loginController.show();
 
-            new MainDashboardController(new MainDashboardView()).show();
+//            new MainDashboardController(new MainDashboardView()).show();
             //
             // // Nếu muốn test thêm các module khác, có thể bật:
             // new PatientManagementController(new PatientManagementView()).show();
             // new DrugController(new DrugView()).show();
-            // new InvoiceController(new InvoiceView()).show();
+         //
             // new SearchingInvoiceController(new SearchingInvoice()).show();
 
-        });
+     });
     }
 }

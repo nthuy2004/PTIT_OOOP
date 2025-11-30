@@ -24,13 +24,44 @@ public class AuthService {
     }
 
     public boolean Login(String username, String password) throws Exception {
-        Staff s = staffDAO.getByUsername(username);
-        if(s == null){
-            throw new Exception("Invalid username or password");
+        if (username == null || username.trim().isEmpty()) {
+            throw new Exception("Tên đăng nhập không được để trống");
         }
-        if(!s.getPassword().equals(Util.md5(password))){
-            throw new Exception("Invalid password");
+        if (password == null || password.trim().isEmpty()) {
+            throw new Exception("Mật khẩu không được để trống");
         }
-        return true;
+        
+        try {
+            Staff s = staffDAO.getByUsername(username.trim());
+            if(s == null){
+                throw new Exception("Tên đăng nhập không tồn tại");
+            }
+            
+            String inputPasswordHash = Util.md5(password.trim());
+            String storedPasswordHash = s.getPassword();
+            
+            // Debug: In ra để kiểm tra (có thể xóa sau)
+            System.out.println("Debug Login:");
+            System.out.println("  Username: " + username);
+            System.out.println("  Input password hash: " + inputPasswordHash);
+            System.out.println("  Stored password hash: " + storedPasswordHash);
+            System.out.println("  Match: " + storedPasswordHash.equals(inputPasswordHash));
+            
+            if(!storedPasswordHash.equals(inputPasswordHash)){
+                throw new Exception("Mật khẩu không chính xác");
+            }
+            
+            // Lưu thông tin staff đã đăng nhập
+            this.staffInfo = s;
+            return true;
+        } catch (SQLException e) {
+            System.err.println("Database error during login: " + e.getMessage());
+            e.printStackTrace();
+            throw new Exception("Lỗi kết nối cơ sở dữ liệu: " + e.getMessage());
+        }
+    }
+    
+    public Staff getCurrentStaff() {
+        return staffInfo;
     }
 }
