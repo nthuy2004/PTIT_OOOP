@@ -353,7 +353,6 @@ public class InvoiceDAO {
     public List<Invoice> getAll() throws SQLException {
         String sql = "SELECT * FROM invoice ORDER BY id DESC";
         List<Invoice> invoiceList = new ArrayList<>();
-
         try (PreparedStatement ps = conn.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {

@@ -37,18 +37,23 @@ import com.ptit.dental.model.enums.Gender;
 import com.ptit.dental.utils.Database;
 import com.ptit.dental.view.PatientFormDialog;
 import com.ptit.dental.view.PatientManagementView;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 public class PatientManagementController extends BaseController<PatientManagementView> {
     private PatientDAO patientDAO;
     private SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
+    private List<Patient> patients = new ArrayList<>();
+    
     public PatientManagementController(PatientManagementView view) {
         super(view);
         try {
@@ -67,11 +72,28 @@ public class PatientManagementController extends BaseController<PatientManagemen
         view.getAddButton().addActionListener(e -> addPatient());
         view.getEditButton().addActionListener(e -> editPatient());
         view.getDeleteButton().addActionListener(e -> deletePatient());
+        
+        view.getPatientTable().addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                // Get the row and column index of the clicked cell
+                int row = view.getPatientTable().rowAtPoint(e.getPoint());
+                int col = view.getPatientTable().columnAtPoint(e.getPoint());
+
+                // Check if a valid cell was clicked
+                if (row >= 0 && row <= patients.size()) {
+                    Patient p = patients.get(row);
+                    JOptionPane.showMessageDialog(null,
+                            "Clicked on Row: " + row + ", Column: " + col + ", Value: " + p);
+                }
+            }
+        });
+        
     }
 
     private void loadPatients() {
         try {
-            List<Patient> patients = patientDAO.getAll();
+            patients = patientDAO.getAll();
             DefaultTableModel model = (DefaultTableModel) view.getPatientTable().getModel();
             model.setRowCount(0);
             
