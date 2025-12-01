@@ -221,4 +221,32 @@ public class AppointmentDAO {
             ps.executeUpdate();
         }
     }
+
+    // Lấy danh sách lịch hẹn theo bệnh nhân
+    public List<Appointment> getByPatientId(int patientId) throws SQLException {
+        List<Appointment> list = new ArrayList<>();
+        String sql = "SELECT a.id, a.time, a.reason, p.id as patient_id, p.fullname as patient_name " +
+                     "FROM appointment a LEFT JOIN patients p ON a.patient_id = p.id WHERE a.patient_id = ? ORDER BY a.id DESC";
+        try (PreparedStatement ps = getConn().prepareStatement(sql)) {
+            ps.setInt(1, patientId);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    int id = rs.getInt("id");
+                    Timestamp ts = rs.getTimestamp("time");
+                    LocalDateTime time = ts != null ? ts.toLocalDateTime() : null;
+                    String reason = rs.getString("reason");
+                    Patient patient = null;
+                    int pid = rs.getInt("patient_id");
+                    if (pid > 0) {
+                        patient = new Patient();
+                        patient.setId(pid);
+                        patient.setFullname(rs.getString("patient_name"));
+                    }
+                    Appointment a = new Appointment(id, time, reason, patient, null);
+                    list.add(a);
+                }
+            }
+        }
+        return list;
+    }
 }

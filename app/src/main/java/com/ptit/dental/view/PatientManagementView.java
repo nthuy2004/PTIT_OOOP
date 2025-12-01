@@ -221,6 +221,17 @@ public class PatientManagementView extends BaseView {
         };
         patientTable = new JTable(model);
         patientTable.getTableHeader().setReorderingAllowed(false);
+        // Thêm sự kiện click để mở form chi tiết
+        patientTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent e) {
+                if (e.getClickCount() == 2 && patientTable.getSelectedRow() != -1) { // double click
+                    int selectedRow = patientTable.getSelectedRow();
+                    int patientId = Integer.parseInt(patientTable.getValueAt(selectedRow, 0).toString());
+                    new com.ptit.dental.view.PatientDetailDialog(PatientManagementView.this, patientId).setVisible(true);
+                }
+            }
+        });
     }
 
     private void setupLayout() {
