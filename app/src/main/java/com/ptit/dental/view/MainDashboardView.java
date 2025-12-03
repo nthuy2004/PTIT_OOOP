@@ -7,6 +7,7 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import com.ptit.dental.base.BaseView;
+import com.ptit.dental.model.service.AuthService;
 
 public class MainDashboardView extends BaseView {
 
@@ -22,24 +23,22 @@ public class MainDashboardView extends BaseView {
 
         String imagePath = "/com/ptit/dental/image/";
 
-        // ===== HEADER =====
+        //header
         JPanel headerPanel = new JPanel(new BorderLayout());
         headerPanel.setBackground(Color.WHITE);
         headerPanel.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
 
-        // Logo + tên app
         JPanel logoPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         logoPanel.setOpaque(false);
 
         JLabel logoLabel = new JLabel(new ImageIcon(getClass().getResource(imagePath + "rang1.png")));
-        JLabel titleLabel = new JLabel("<html><b>Dental Management System</b><br>Hệ thống quản lý răng</html>");
+        JLabel titleLabel = new JLabel("<html><b>Dental Management System</b><br>Hệ thống quản lý răng - Xin chào: " + AuthService.staffInfo.getFullname() + "</br></html>");
         titleLabel.setFont(new Font("SansSerif", Font.PLAIN, 17));
 
         logoPanel.add(logoLabel);
         logoPanel.add(Box.createHorizontalStrut(10));
         logoPanel.add(titleLabel);
 
-        // Nút đăng xuất
         btnLogout = new JButton("Đăng xuất");
         btnLogout.setIcon(new ImageIcon(getClass().getResource(imagePath + "LOGOUT.png")));
         btnLogout.setFocusPainted(false);
@@ -53,7 +52,6 @@ public class MainDashboardView extends BaseView {
 
         add(headerPanel, BorderLayout.NORTH);
 
-        // ===== CONTENT =====
         contentPanel = new JPanel(new GridLayout(2, 3, 20, 20));
         contentPanel.setBorder(BorderFactory.createEmptyBorder(20, 30, 20, 30));
         contentPanel.setBackground(new Color(245, 245, 245));
@@ -82,7 +80,6 @@ public class MainDashboardView extends BaseView {
         panel.add(icon, BorderLayout.CENTER);
         panel.add(label, BorderLayout.SOUTH);
 
-        // Hiệu ứng hover
         panel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
@@ -96,7 +93,6 @@ public class MainDashboardView extends BaseView {
 
             @Override
             public void mouseClicked(MouseEvent e) {
-                // Xử lý chuyển trang tại đây
                 handleMenuClick(title);
             }
         });
@@ -114,8 +110,6 @@ public class MainDashboardView extends BaseView {
     }
 
     private void handleMenuClick(String title) {
-        // Các view con hiện đang kế thừa JFrame (BaseView), không thể add trực tiếp vào JPanel.
-        // Thay vào đó, mở chúng dưới dạng cửa sổ riêng.
         switch (title) {
             case "Bệnh nhân":
                 PatientManagementView patientView = new PatientManagementView();
@@ -138,7 +132,7 @@ public class MainDashboardView extends BaseView {
                 invoiceView.showView();
                 break;
             default:
-                JOptionPane.showMessageDialog(this, "Trang chưa được phát triển", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Unknown view", "msg", JOptionPane.INFORMATION_MESSAGE);
                 break;
         }
     }

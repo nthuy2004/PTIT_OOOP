@@ -6,6 +6,7 @@ package com.ptit.dental.model.dao;
 
 import com.ptit.dental.model.entity.MedicalRecord;
 import com.ptit.dental.model.entity.Patient;
+import com.ptit.dental.model.entity.Staff;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -156,9 +157,9 @@ public class MedicalRecordDAO {
 
         // Load patient
         Patient patient = patientDAO.getById(patientId);
+        Staff staff = staffDAO.getById(doctorId);
 
-        // For now, doctor is null. You can implement StaffDAO similarly if needed
-        return new MedicalRecord(id, patient, null, diagnostic, plan, status, time);
+        return new MedicalRecord(id, patient, staff, diagnostic, plan, status, time);
     }
     
     /**

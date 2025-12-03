@@ -17,7 +17,7 @@ import java.sql.SQLException;
 public class AuthService {
     private StaffDAO staffDAO;
 
-    private Staff staffInfo;
+    public static Staff staffInfo;
 
     public AuthService(StaffDAO staffDAO) {
         this.staffDAO = staffDAO;
@@ -40,19 +40,11 @@ public class AuthService {
             String inputPasswordHash = Util.md5(password.trim());
             String storedPasswordHash = s.getPassword();
             
-            // Debug: In ra để kiểm tra (có thể xóa sau)
-            System.out.println("Debug Login:");
-            System.out.println("  Username: " + username);
-            System.out.println("  Input password hash: " + inputPasswordHash);
-            System.out.println("  Stored password hash: " + storedPasswordHash);
-            System.out.println("  Match: " + storedPasswordHash.equals(inputPasswordHash));
-            
             if(!storedPasswordHash.equals(inputPasswordHash)){
                 throw new Exception("Mật khẩu không chính xác");
             }
             
-            // Lưu thông tin staff đã đăng nhập
-            this.staffInfo = s;
+            staffInfo = s;
             return true;
         } catch (SQLException e) {
             System.err.println("Database error during login: " + e.getMessage());

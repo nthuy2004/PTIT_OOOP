@@ -1,12 +1,16 @@
 package com.ptit.dental.view;
 
+import com.ptit.dental.model.dao.PatientDAO;
 import com.ptit.dental.model.entity.Appointment;
 import com.ptit.dental.model.entity.Patient;
+import com.ptit.dental.utils.Injector;
+import com.ptit.dental.view.component.PatientPicker;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -17,7 +21,7 @@ public class AppointmentFormDialog extends JDialog {
     private boolean saved = false;
     private Appointment appointment;
 
-    private JTextField tfPatientName;
+    private PatientPicker tfPatientName;
     private JTextField tfDate; // dd/MM/yyyy
     private JTextField tfTime; // HH:mm
     private JTextField tfService;
@@ -39,8 +43,13 @@ public class AppointmentFormDialog extends JDialog {
         form.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
 
         form.add(new JLabel("Tên bệnh nhân:"));
-        tfPatientName = new JTextField();
-        form.add(tfPatientName);
+        
+        PatientDAO pDAO = Injector.get(PatientDAO.class);
+        try {
+            tfPatientName = new PatientPicker(pDAO.getAll());
+            form.add(tfPatientName);
+        }
+        catch(SQLException ex){}
 
         form.add(new JLabel("Ngày (dd/MM/yyyy):"));
         tfDate = new JTextField();
@@ -85,7 +94,7 @@ public class AppointmentFormDialog extends JDialog {
     private void populate(Appointment app) {
         if (app == null)
             return;
-        tfPatientName.setText(app.getPatientName());
+        tfPatientName.setSelectedById(app.patient.getId());
         if (app.getDate() != null) {
             DateTimeFormatter df = DateTimeFormatter.ofPattern("dd/MM/yyyy");
             LocalDate ld = LocalDate.ofInstant(app.getDate().toInstant(), java.time.ZoneId.systemDefault());
@@ -98,7 +107,7 @@ public class AppointmentFormDialog extends JDialog {
 
     private void onSave() {
         try {
-            String name = tfPatientName.getText().trim();
+            Patient patient = tfPatientName.getSelectedPatient();
             String dateStr = tfDate.getText().trim();
             String timeStr = tfTime.getText().trim();
             String service = tfService.getText().trim();
@@ -108,15 +117,12 @@ public class AppointmentFormDialog extends JDialog {
             LocalTime lt = LocalTime.parse(timeStr);
             LocalDateTime ldt = LocalDateTime.of(ld, lt);
 
-            Patient p = new Patient();
-            p.setFullname(name);
-
             if (appointment == null) {
-                appointment = new Appointment(null, ldt, service, p, null);
+                appointment = new Appointment(null, ldt, service, patient, null);
             } else {
                 appointment.time = ldt;
                 appointment.reason = service;
-                appointment.patient = p;
+                appointment.patient = patient;
             }
 
             saved = true;

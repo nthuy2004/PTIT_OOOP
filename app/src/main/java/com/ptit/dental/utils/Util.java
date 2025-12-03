@@ -2,6 +2,8 @@ package com.ptit.dental.utils;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class Util {
     public static String md5(String input) {
@@ -17,5 +19,11 @@ public class Util {
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
         }
+    }
+    
+    public static String formatDate(Date d)
+    {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        return dateFormat.format(d);
     }
 }

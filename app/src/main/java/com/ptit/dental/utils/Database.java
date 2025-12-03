@@ -16,7 +16,6 @@ public class Database {
     public static Database _instance = null;
     private Connection connection;
     
-    // Cấu hình database - có thể thay đổi theo môi trường
     private final String URL = "jdbc:mysql://180.93.139.29:23306/dental";
     private final String USERNAME = "root";
     private final String PASSWORD = "";
@@ -24,15 +23,11 @@ public class Database {
     private Database() throws SQLException {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            System.out.println("Đang kết nối đến database: " + URL);
             this.connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
-            System.out.println("✅ Kết nối database thành công!");
+            System.out.println("Database init ok");
         } catch (ClassNotFoundException ex) {
-            throw new SQLException("MySQL Driver not found. Vui lòng kiểm tra thư viện MySQL JDBC.", ex);
+            throw new SQLException("MySQL Driver not found", ex);
         } catch (SQLException ex) {
-            System.err.println("❌ Lỗi kết nối database: " + ex.getMessage());
-            System.err.println("URL: " + URL);
-            System.err.println("Username: " + USERNAME);
             throw ex;
         }
     }

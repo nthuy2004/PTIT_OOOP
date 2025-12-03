@@ -12,7 +12,22 @@ import java.util.Map;
  * @author Administrator
  */
 public enum Gender {
-    UNKNOWN(0), NAM(1), NU(2);
+    UNKNOWN(0) {
+        @Override
+        public String toString() {
+            return "Kobth";
+        }
+    }, NAM(1) {
+        @Override
+        public String toString() {
+            return "Nam";
+        }
+    }, NU(2) {
+        @Override
+        public String toString() {
+            return "Nữ";
+        }
+    };
     
     private int value;
     

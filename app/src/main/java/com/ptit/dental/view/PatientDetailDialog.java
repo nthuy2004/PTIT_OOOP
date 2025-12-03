@@ -1,70 +1,175 @@
+/*
+ * PTIT OOP
+ * QUAN LY PHONG KHAM RANG
+ */
 package com.ptit.dental.view;
 
-import com.ptit.dental.model.dao.AppointmentDAO;
-import com.ptit.dental.model.dao.MedicalRecordDAO;
-import com.ptit.dental.model.entity.Appointment;
-import com.ptit.dental.model.entity.MedicalRecord;
-import com.ptit.dental.utils.Database;
-
+import com.ptit.dental.base.BaseView;
+import java.awt.*;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import java.awt.*;
-import java.sql.Connection;
-import java.util.List;
 
-public class PatientDetailDialog extends JDialog {
-    private int patientId;
+/**
+ *
+ * @author Administrator
+ */
+public class PatientDetailDialog extends BaseView {
+    
+    public JTextField txtFullname, txtBirthday, txtGender, txtPhone;
+    public JTextArea txtAddress;
 
-    public PatientDetailDialog(JFrame parent, int patientId) {
-        super(parent, "Chi tiết bệnh nhân", true);
-        this.patientId = patientId;
-        setSize(900, 550);
-        setLocationRelativeTo(parent);
+    public JTable tblRecords, tblAppointments;
+
+    public JButton btnAddRecord, btnViewRecord, btnEditRecord;
+    public JButton btnAddAppointment, btnViewAppointment, btnEditAppointment, btnDeleteAppointment;
+    
+    public PatientDetailDialog() {
+        setTitle("Hồ sơ bệnh án của bệnh nhân");
+        setSize(900, 600);
+        setLocationRelativeTo(null);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
         setLayout(new BorderLayout());
-        try {
-            Connection conn = Database.getInstance().getConnection();
-            AppointmentDAO appointmentDAO = new AppointmentDAO(conn);
-            MedicalRecordDAO medicalRecordDAO = new MedicalRecordDAO(conn);
-            List<Appointment> appointments = appointmentDAO.getByPatientId(patientId);
-            List<MedicalRecord> records = medicalRecordDAO.getByPatientId(patientId);
+        initLayout();
+    }
+    
+    private void initLayout()
+    {
+        add(createPatientInfoPanel(), BorderLayout.NORTH);
+        add(createTabbedPane(), BorderLayout.CENTER);
+    }
+    
+    private JPanel createPatientInfoPanel() {
+        JPanel panel = new JPanel(new GridBagLayout());
+        GridBagConstraints c = new GridBagConstraints();
+        c.insets = new Insets(5, 5, 5, 5);
 
-            // Lịch hẹn table
-            String[] apptHeaders = {"ID", "Thời gian", "Ghi chú/Lý do"};
-            DefaultTableModel apptModel = new DefaultTableModel(apptHeaders, 0) {
-                @Override public boolean isCellEditable(int r, int c) { return false; } };
-            for (Appointment appt : appointments) {
-                apptModel.addRow(new Object[]{appt.getId(), appt.time, appt.getService()});
+        JLabel lblFullname = new JLabel("Tên đầy đủ:");
+        JLabel lblBirthday = new JLabel("Ngày sinh:");
+        JLabel lblGender = new JLabel("Giới tính:");
+        JLabel lblPhone = new JLabel("SĐT:");
+        JLabel lblAddress = new JLabel("Địa chỉ:");
+
+        txtFullname = new JTextField(20);
+        txtBirthday = new JTextField(10);
+        txtGender = new JTextField(8);
+        txtPhone = new JTextField(15);
+        txtAddress = new JTextArea(3, 30);
+
+        txtFullname.setEditable(false);
+        txtBirthday.setEditable(false);
+        txtGender.setEditable(false);
+        txtPhone.setEditable(false);
+        txtAddress.setEditable(false);
+
+        c.gridx = 0; c.gridy = 0;
+        panel.add(lblFullname, c);
+
+        c.gridx = 1;
+        panel.add(txtFullname, c);
+
+        c.gridx = 2;
+        panel.add(lblBirthday, c);
+
+        c.gridx = 3;
+        panel.add(txtBirthday, c);
+
+        c.gridx = 0; c.gridy = 1;
+        panel.add(lblGender, c);
+
+        c.gridx = 1;
+        panel.add(txtGender, c);
+
+        c.gridx = 2;
+        panel.add(lblPhone, c);
+
+        c.gridx = 3;
+        panel.add(txtPhone, c);
+
+        c.gridx = 0; c.gridy = 2;
+        panel.add(lblAddress, c);
+
+        c.gridx = 1; c.gridwidth = 3;
+        panel.add(new JScrollPane(txtAddress), c);
+
+        return panel;
+    }
+
+    private JTabbedPane createTabbedPane() {
+        JTabbedPane tabs = new JTabbedPane();
+
+        tabs.add("Danh sách bệnh án", createMedicalRecordsPanel());
+        tabs.add("Lịch hẹn", createAppointmentsPanel());
+
+        return tabs;
+    }
+
+    private JPanel createMedicalRecordsPanel() {
+        JPanel panel = new JPanel(new BorderLayout());
+        
+
+        String[] columnNames = {"ID", "Bác sĩ điều trị", "Dịch vụ đã dùng", "Thời gian tạo", "Chẩn đoán", "Kế hoạch điều trị", "Trạng thái"};
+        DefaultTableModel model = new DefaultTableModel(columnNames, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false; // Table read-only
             }
+        };
+        tblRecords = new JTable(model);
+        tblRecords.getTableHeader().setReorderingAllowed(false);
+        
+        panel.add(new JScrollPane(tblRecords), BorderLayout.CENTER);
+        
+        JPanel buttonPanel = new JPanel();
+        btnAddRecord = new JButton("Thêm");
+        btnViewRecord = new JButton("Chi tiết");
+        btnEditRecord = new JButton("Sửa");
 
-            JTable tblAppointments = new JTable(apptModel);
-            JScrollPane spAppointments = new JScrollPane(tblAppointments);
+        buttonPanel.add(btnAddRecord);
+        buttonPanel.add(btnViewRecord);
+        buttonPanel.add(btnEditRecord);
 
-            // Hồ sơ bệnh table
-            String[] recordHeaders = {"ID", "Chẩn đoán", "Kế hoạch", "Trạng thái", "Thời gian"};
-            DefaultTableModel recordModel = new DefaultTableModel(recordHeaders, 0) {
-                @Override public boolean isCellEditable(int r, int c) { return false; } };
-            for (MedicalRecord rec : records) {
-                recordModel.addRow(new Object[]{rec.getId(), rec.getDiagnostic(), rec.getPlan(), rec.getStatus(), rec.getTime()});
+        panel.add(buttonPanel, BorderLayout.SOUTH);
+        return panel;
+    }
+
+    private JPanel createAppointmentsPanel() {
+        JPanel panel = new JPanel(new BorderLayout());
+
+        
+        String[] columnNames = {
+                "Mã lịch hẹn",
+                "Tên bệnh nhân",
+                "Ngày",
+                "Giờ",
+                "Dịch vụ",
+                "Ghi chú"
+        };
+        
+        DefaultTableModel model = new DefaultTableModel(columnNames, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false; // Table read-only
             }
+        };
+        
+        tblAppointments = new JTable(model);
+        tblAppointments.getTableHeader().setReorderingAllowed(false);
+        
+        panel.add(new JScrollPane(tblAppointments), BorderLayout.CENTER);
 
-            JTable tblRecords = new JTable(recordModel);
-            JScrollPane spRecords = new JScrollPane(tblRecords);
+        JPanel buttonPanel = new JPanel();
+        btnAddAppointment = new JButton("Thêm");
+        btnViewAppointment = new JButton("Xem");
+        btnEditAppointment = new JButton("Sửa");
+        btnDeleteAppointment = new JButton("Xoá");
 
-            // Tabs
-            JTabbedPane tabbedPane = new JTabbedPane();
-            tabbedPane.addTab("Lịch hẹn", spAppointments);
-            tabbedPane.addTab("Hồ sơ bệnh", spRecords);
+        buttonPanel.add(btnAddAppointment);
+        buttonPanel.add(btnViewAppointment);
+        buttonPanel.add(btnEditAppointment);
+        buttonPanel.add(btnDeleteAppointment);
 
-            add(tabbedPane, BorderLayout.CENTER);
-            JButton btnClose = new JButton("Đóng");
-            btnClose.addActionListener(e -> dispose());
-            JPanel panelBtn = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-            panelBtn.add(btnClose);
-            add(panelBtn, BorderLayout.SOUTH);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Lỗi khi tải dữ liệu chi tiết bệnh nhân: " + ex.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
-            dispose();
-        }
+        panel.add(buttonPanel, BorderLayout.SOUTH);
+        return panel;
     }
 }

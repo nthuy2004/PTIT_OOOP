@@ -1,33 +1,3 @@
-//package com.ptit.dental.controller;
-//
-//import com.ptit.dental.base.BaseController;
-//import com.ptit.dental.view.MedicalRecordView;
-//
-//public class MedicalRecordController extends BaseController<MedicalRecordView> {
-//    public MedicalRecordController(MedicalRecordView view) {
-//        super(view);
-//        initListeners();
-//    }
-//
-//    private void initListeners() {
-//        view.saveButton.addActionListener(e -> {
-//            // TODO: Implement save logic
-//            String patientName=view.namePatientField.getText();
-//            String doctor = (String) view.doctorComboBox.getSelectedItem();
-//            String diseaseType = (String) view.diseaseTypeComboBox.getSelectedItem();
-//            String diagnostic = view.diagnosticArea.getText();
-//            String plan = view.planArea.getText();
-//            String status = (String) view.statusComboBox.getSelectedItem();
-//            java.util.Date date = view.dateChooser.getDate();
-//            // Save to database
-//        });
-//
-//        view.cancelButton.addActionListener(e -> {
-//            view.dispose();
-//        });
-//    }
-//}
-
 package com.ptit.dental.controller;
 
 import com.ptit.dental.base.BaseController;
@@ -35,6 +5,7 @@ import com.ptit.dental.model.dao.PatientDAO;
 import com.ptit.dental.model.entity.Patient;
 import com.ptit.dental.model.enums.Gender;
 import com.ptit.dental.utils.Database;
+import com.ptit.dental.view.PatientDetailDialog;
 import com.ptit.dental.view.PatientFormDialog;
 import com.ptit.dental.view.PatientManagementView;
 
@@ -48,6 +19,7 @@ import java.util.List;
 public class PatientManagementController extends BaseController<PatientManagementView> {
     private PatientDAO patientDAO;
     private SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+    private List<Patient> patients;
 
     public PatientManagementController(PatientManagementView view) {
         super(view);
@@ -67,26 +39,48 @@ public class PatientManagementController extends BaseController<PatientManagemen
         view.getAddButton().addActionListener(e -> addPatient());
         view.getEditButton().addActionListener(e -> editPatient());
         view.getDeleteButton().addActionListener(e -> deletePatient());
+        
+        view.getPatientTable().addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent e) {
+                if (e.getClickCount() == 2 && view.getPatientTable().getSelectedRow() != -1) { // double click
+                    int selectedRow = view.getPatientTable().getSelectedRow();
+                    Patient p = patients.get(selectedRow);
+                    if(p != null)
+                    {
+                        PatientDetailDialog dlg = new PatientDetailDialog();
+                        new PatientDetailController(dlg, p).show();
+                    }
+                    else
+                    {
+                        JOptionPane.showMessageDialog(view, "Wrong selection", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+            }
+        });
     }
 
+    private void renderPatients(List<Patient> patients)
+    {
+        DefaultTableModel model = (DefaultTableModel) view.getPatientTable().getModel();
+        model.setRowCount(0);
+
+        for (Patient patient : patients) {
+            model.addRow(new Object[]{
+                patient.getId(),
+                patient.getFullname(),
+                dateFormat.format(patient.getBirthday()),
+                patient.getGender().toString(),
+                patient.getAddress(),
+                patient.getPhone()
+            });
+        }
+    }
+    
     private void loadPatients() {
         try {
-            List<Patient> patients = patientDAO.getAll();
-            DefaultTableModel model = (DefaultTableModel) view.getPatientTable().getModel();
-            model.setRowCount(0);
-            
-            for (Patient patient : patients) {
-                String genderStr = patient.getGender() == Gender.NAM ? "Nam" : 
-                                  (patient.getGender() == Gender.NU ? "Nữ" : "Khác");
-                model.addRow(new Object[]{
-                    patient.getId(),
-                    patient.getFullname(),
-                    dateFormat.format(patient.getBirthday()),
-                    genderStr,
-                    patient.getAddress(),
-                    patient.getPhone()
-                });
-            }
+            patients = patientDAO.getAll();
+            renderPatients(patients);
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(view, "Lỗi tải dữ liệu: " + e.getMessage(), 
                     "Lỗi", JOptionPane.ERROR_MESSAGE);
@@ -101,22 +95,8 @@ public class PatientManagementController extends BaseController<PatientManagemen
         }
         
         try {
-            List<Patient> patients = patientDAO.searchByName(keyword);
-            DefaultTableModel model = (DefaultTableModel) view.getPatientTable().getModel();
-            model.setRowCount(0);
-            
-            for (Patient patient : patients) {
-                String genderStr = patient.getGender() == Gender.NAM ? "Nam" : 
-                                  (patient.getGender() == Gender.NU ? "Nữ" : "Khác");
-                model.addRow(new Object[]{
-                    patient.getId(),
-                    patient.getFullname(),
-                    dateFormat.format(patient.getBirthday()),
-                    genderStr,
-                    patient.getAddress(),
-                    patient.getPhone()
-                });
-            }
+            patients = patientDAO.searchByName(keyword);
+            renderPatients(patients);
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(view, "Lỗi tìm kiếm: " + e.getMessage(), 
                     "Lỗi", JOptionPane.ERROR_MESSAGE);

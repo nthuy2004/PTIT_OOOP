@@ -1,133 +1,10 @@
-//package com.ptit.dental.controller;
-//
-//import com.ptit.dental.base.BaseController;
-//import com.ptit.dental.view.SearchingAppointment;
-//
-//public class SearchingAppointmentController extends BaseController<SearchingAppointment> {
-//    public SearchingAppointmentController(SearchingAppointment view) {
-//        super(view);
-//        initListeners();
-//    }
-//
-//    private void initListeners() {
-//        // Add action listeners and event handling logic here
-//        view.getSearchButton().addActionListener(e -> searchInvoices());
-//    }
-//
-//    private void searchInvoices() {
-//        String query = view.getSearchField().getText();
-//        // Implement search logic here
-//    }
-//
-//}
-
-
-//package com.ptit.dental.controller;
-//
-//import com.ptit.dental.base.BaseController;
-//import com.ptit.dental.view.SearchingAppointment;
-//import com.ptit.dental.view.CreateAppointmentForm;
-//
-//import javax.swing.table.DefaultTableModel;
-//
-//public class SearchingAppointmentController extends BaseController<SearchingAppointment> {
-//
-//    public SearchingAppointmentController(SearchingAppointment view) {
-//        super(view);
-//        initListeners();
-//    }
-//
-//    private void initListeners() {
-//
-//        // 🔍 Tìm kiếm lịch hẹn theo tên bệnh nhân
-//        view.getSearchButton().addActionListener(e -> searchAppointments());
-//
-//        // ➕ Tạo lịch hẹn mới
-//        view.getBtnAddAppointment().addActionListener(e -> openCreateAppointmentForm());
-//    }
-//
-//    /**
-//     * Xử lý tìm kiếm lịch hẹn theo tên bệnh nhân.
-//     */
-//    private void searchAppointments() {
-//        String keyword = view.getSearchField().getText().trim().toLowerCase();
-//        DefaultTableModel model = (DefaultTableModel) view.getAppointmentTable().getModel();
-//
-//        // Nếu không nhập gì -> hiện tất cả
-//        if (keyword.isEmpty()) {
-//            restoreAllRows(model);
-//            return;
-//        }
-//
-//        // Lọc theo tên bệnh nhân
-//        DefaultTableModel filteredModel = new DefaultTableModel(
-//                new String[]{"Mã lịch hẹn", "Tên bệnh nhân", "Ngày", "Giờ", "Dịch vụ", "Ghi chú"},
-//                0
-//        );
-//
-//        for (int i = 0; i < model.getRowCount(); i++) {
-//            String patientName = model.getValueAt(i, 1).toString().toLowerCase();
-//
-//            if (patientName.contains(keyword)) {
-//                filteredModel.addRow(new Object[]{
-//                        model.getValueAt(i, 0),
-//                        model.getValueAt(i, 1),
-//                        model.getValueAt(i, 2),
-//                        model.getValueAt(i, 3),
-//                        model.getValueAt(i, 4),
-//                        model.getValueAt(i, 5)
-//                });
-//            }
-//        }
-//
-//        view.getAppointmentTable().setModel(filteredModel);
-//    }
-//
-//
-//    /**
-//     * Khôi phục dữ liệu bảng nếu người dùng xóa ô tìm kiếm
-//     */
-//    private void restoreAllRows(DefaultTableModel model) {
-//        // TODO: nếu có database thì load lại từ DB
-//        // tạm thời không làm gì (nếu bạn muốn tôi sẽ bổ sung DB)
-//    }
-//
-//
-//    /**
-//     * Mở form để tạo lịch hẹn mới
-//     */
-//    private void openCreateAppointmentForm() {
-//        CreateAppointmentForm form = new CreateAppointmentForm(view);
-//
-//        form.getBtnSave().addActionListener(ev -> {
-//            // Thu thập dữ liệu từ form
-//            String id = "AP" + System.currentTimeMillis();
-//            String patientName = form.getPatientName();
-//            String date = form.getDate();
-//            String time = form.getTime();
-//            String service = form.getService();
-//            String note = form.getNote();
-//
-//            // Thêm vào table
-//            view.addAppointmentToTable(id, patientName, date, time, service, note);
-//
-//            // Đóng form
-//            form.dispose();
-//        });
-//
-//        form.setVisible(true);
-//    }
-//
-//}
-
-
-
 package com.ptit.dental.controller;
 
 import com.ptit.dental.base.BaseController;
 import com.ptit.dental.model.dao.AppointmentDAO;
 import com.ptit.dental.model.entity.Appointment;
 import com.ptit.dental.utils.Database;
+import com.ptit.dental.utils.Util;
 import com.ptit.dental.view.AppointmentFormDialog;
 import com.ptit.dental.view.SearchingAppointment;
 
@@ -166,9 +43,6 @@ public class SearchingAppointmentController extends BaseController<SearchingAppo
         view.getBtnDeleteAppointment().addActionListener(e -> deleteAppointment());
     }
 
-    /** ===============================
-     * 📌 LOAD APPOINTMENTS
-     * ===============================*/
     private void loadAppointments() {
         try {
             List<Appointment> list = appointmentDAO.getAll();
@@ -179,7 +53,7 @@ public class SearchingAppointmentController extends BaseController<SearchingAppo
                 model.addRow(new Object[]{
                         a.getId(),
                         a.getPatientName(),
-                        dateFormat.format(a.getDate()),
+                        Util.formatDate(a.getDate()),
                         a.getTime(),
                         a.getService(),
                         a.getNote()

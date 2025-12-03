@@ -2,30 +2,6 @@
 // * PTIT OOP
 // * QUAN LY PHONG KHAM RANG
 // */
-//package com.ptit.dental.view;
-//
-//import com.ptit.dental.base.BaseView;
-//
-///**
-// *
-// * @author Administrator
-// */
-//import javax.swing.*;
-//import java.awt.*;
-//
-//public class LoginView extends BaseView {
-//    public JTextField txtUser = new JTextField(10);
-//    public JButton btnLogin = new JButton("Login");
-//
-//    public LoginView() {
-//        super("Login");
-//        setLayout(new FlowLayout());
-//        add(new JLabel("Username:"));
-//        add(txtUser);
-//        add(btnLogin);
-//    }
-//}
-
 package com.ptit.dental.view;
 
 import com.ptit.dental.base.BaseView;
@@ -68,14 +44,14 @@ public class LoginView extends BaseView {
         gbc.insets = new Insets(7, 10, 7, 10);
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
-        // Tiêu đề
+        // title
         JLabel logoLabel = new JLabel("QUẢN LÝ PHÒNG KHÁM RĂNG", SwingConstants.CENTER);
         logoLabel.setFont(new Font("Roboto", Font.BOLD, 30));
         logoLabel.setForeground(Color.WHITE);
         gbc.gridx = 0; gbc.gridy = 0; gbc.gridwidth = 2;
         formPanel.add(logoLabel, gbc);
 
-        // Username label
+        // Username
         gbc.gridwidth = 1;
         gbc.gridy++;
         JLabel usernameLabel = new JLabel("Tên Người Dùng", SwingConstants.RIGHT);
