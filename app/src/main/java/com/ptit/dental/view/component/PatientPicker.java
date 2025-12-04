@@ -8,6 +8,7 @@ import com.ptit.dental.model.entity.Patient;
 import java.awt.*;
 import javax.swing.*;
 import java.util.List;
+
 /**
  *
  * @author Administrator
@@ -27,7 +28,7 @@ public class PatientPicker extends JComboBox<Patient> {
                 super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 
                 if (value instanceof Patient) {
-                    Patient p = (Patient)value;
+                    Patient p = (Patient) value;
                     setText(p.getFullname() + " (" + p.getPhone() + ")");
                 }
 
@@ -39,7 +40,7 @@ public class PatientPicker extends JComboBox<Patient> {
     public Patient getSelectedPatient() {
         return (Patient) getSelectedItem();
     }
-    
+
     public void setSelectedById(int id) {
         for (int i = 0; i < getItemCount(); i++) {
             Patient p = getItemAt(i);
@@ -49,9 +50,10 @@ public class PatientPicker extends JComboBox<Patient> {
             }
         }
     }
-    
+
     public void setSelectedByName(String name) {
-        if (name == null) return;
+        if (name == null)
+            return;
 
         for (int i = 0; i < getItemCount(); i++) {
             Patient p = getItemAt(i);
@@ -61,7 +63,7 @@ public class PatientPicker extends JComboBox<Patient> {
             }
         }
     }
-    
+
     public void setSelected(java.util.function.Predicate<Patient> filter) {
         for (int i = 0; i < getItemCount(); i++) {
             Patient p = getItemAt(i);

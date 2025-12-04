@@ -89,13 +89,13 @@ public class AppointmentDAO {
     public void insert(Appointment appointment) throws SQLException {
         // Lấy doctor_id mặc định
         int doctorId = getDefaultDoctorId();
-        
+
         // Tìm hoặc lấy patient_id
         int patientId = getOrFindPatientId(appointment);
         if (patientId <= 0) {
             throw new SQLException("Không tìm thấy bệnh nhân");
         }
-        
+
         String sql = "INSERT INTO appointment (`patient_id`, `doctor_id`, time, reason) VALUES (?, ?, ?, ?)";
         try (PreparedStatement ps = getConn().prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
             ps.setInt(1, patientId);
@@ -111,7 +111,7 @@ public class AppointmentDAO {
             }
         }
     }
-    
+
     /**
      * Tìm patient_id từ appointment (từ patient object hoặc tên)
      */
@@ -120,9 +120,10 @@ public class AppointmentDAO {
         if (appointment.getPatient() != null && appointment.getPatient().getId() > 0) {
             return appointment.getPatient().getId();
         }
-        
+
         // Nếu có tên bệnh nhân, tìm theo tên
-        if (appointment.getPatient().getFullname() != null && !appointment.getPatient().getFullname().trim().isEmpty()) {
+        if (appointment.getPatient().getFullname() != null
+                && !appointment.getPatient().getFullname().trim().isEmpty()) {
             String sql = "SELECT id FROM patients WHERE fullname = ? LIMIT 1";
             try (PreparedStatement ps = getConn().prepareStatement(sql)) {
                 ps.setString(1, appointment.getPatient().getFullname().trim());
@@ -133,7 +134,7 @@ public class AppointmentDAO {
                 }
             }
         }
-        
+
         return 0; // Không tìm thấy
     }
 
@@ -163,15 +164,15 @@ public class AppointmentDAO {
     public void update(Appointment appointment) throws SQLException {
         // Lấy doctor_id mặc định nếu chưa có
         int doctorId = getDefaultDoctorId();
-        
+
         // Tìm hoặc lấy patient_id
         int patientId = getOrFindPatientId(appointment);
         if (patientId <= 0) {
-            throw new SQLException("Không tìm thấy bệnh nhân với tên: " + 
-                (appointment.getPatient().getFullname() != null ? appointment.getPatient().getFullname() : "N/A") + 
-                ". Vui lòng tạo bệnh nhân trước khi cập nhật lịch hẹn.");
+            throw new SQLException("Không tìm thấy bệnh nhân với tên: " +
+                    (appointment.getPatient().getFullname() != null ? appointment.getPatient().getFullname() : "N/A") +
+                    ". Vui lòng tạo bệnh nhân trước khi cập nhật lịch hẹn.");
         }
-        
+
         String sql = "UPDATE appointment SET patient_id = ?, doctor_id = ?, time = ?, reason = ? WHERE id = ?";
         try (PreparedStatement ps = getConn().prepareStatement(sql)) {
             ps.setInt(1, patientId);
@@ -182,31 +183,31 @@ public class AppointmentDAO {
             ps.executeUpdate();
         }
     }
-    
+
     /**
      * Lấy doctor_id mặc định (staff đầu tiên, ưu tiên role = 2 là BACSI)
      */
     private int getDefaultDoctorId() throws SQLException {
         Connection conn = getConn();
-        
+
         // Ưu tiên tìm staff có role = 2 (BACSI)
         String sql = "SELECT id FROM staff WHERE role = 2 ORDER BY id ASC LIMIT 1";
         try (PreparedStatement ps = conn.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
+                ResultSet rs = ps.executeQuery()) {
             if (rs.next()) {
                 return rs.getInt("id");
             }
         }
-        
+
         // Nếu không có doctor, lấy staff đầu tiên
         String fallbackSql = "SELECT id FROM staff ORDER BY id ASC LIMIT 1";
         try (PreparedStatement ps = conn.prepareStatement(fallbackSql);
-             ResultSet rs = ps.executeQuery()) {
+                ResultSet rs = ps.executeQuery()) {
             if (rs.next()) {
                 return rs.getInt("id");
             }
         }
-        
+
         // Nếu không có staff nào, throw exception
         throw new SQLException("Không có staff nào trong database. Vui lòng thêm ít nhất một staff.");
     }
@@ -223,7 +224,7 @@ public class AppointmentDAO {
     public List<Appointment> getByPatientId(int patientId) throws SQLException {
         List<Appointment> list = new ArrayList<>();
         String sql = "SELECT a.id, a.time, a.reason, p.id as patient_id, p.fullname as patient_name " +
-                     "FROM appointment a LEFT JOIN patients p ON a.patient_id = p.id WHERE a.patient_id = ? ORDER BY a.id DESC";
+                "FROM appointment a LEFT JOIN patients p ON a.patient_id = p.id WHERE a.patient_id = ? ORDER BY a.id DESC";
         try (PreparedStatement ps = getConn().prepareStatement(sql)) {
             ps.setInt(1, patientId);
             try (ResultSet rs = ps.executeQuery()) {

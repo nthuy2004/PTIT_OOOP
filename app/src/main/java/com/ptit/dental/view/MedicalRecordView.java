@@ -30,15 +30,17 @@ public class MedicalRecordView extends BaseView {
         namePatientField = new JTextField(20);
 
         // Initialize doctor combo box
-        String[] doctors = {"Dr. Smith", "Dr. Johnson", "Dr. Williams"}; // Add your doctor names
+        String[] doctors = { "Dr. Smith", "Dr. Johnson", "Dr. Williams" }; // Add your doctor names
         doctorComboBox = new JComboBox<>(doctors);
 
         // Initialize disease type combo box
-        String[] diseaseTypes = {"Cavity", "Gum Disease", "Root Canal", "Tooth Extraction", "Cleaning"}; // Add your disease types
+        String[] diseaseTypes = { "Cavity", "Gum Disease", "Root Canal", "Tooth Extraction", "Cleaning" }; // Add your
+                                                                                                           // disease
+                                                                                                           // types
         diseaseTypeComboBox = new JComboBox<>(diseaseTypes);
 
         // Initialize status combo box
-        String[] statusOptions = {"Not Yet", "Done", "Cancel"};
+        String[] statusOptions = { "Not Yet", "Done", "Cancel" };
         statusComboBox = new JComboBox<>(statusOptions);
 
         // Initialize text areas
@@ -59,7 +61,7 @@ public class MedicalRecordView extends BaseView {
         setTitle("Medical Record");
         setSize(1000, 1000);
         setLocationRelativeTo(null);
-        //title
+        // title
         JLabel titleLabel = new JLabel("Medical Record");
         titleLabel.setFont(new Font("Arial", Font.LAYOUT_LEFT_TO_RIGHT, 26));
         titleLabel.setBorder(BorderFactory.createEmptyBorder(20, 10, 10, 10));

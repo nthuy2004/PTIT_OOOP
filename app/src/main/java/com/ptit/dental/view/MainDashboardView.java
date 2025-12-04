@@ -1,5 +1,4 @@
 
-
 package com.ptit.dental.view;
 
 import javax.swing.*;
@@ -23,7 +22,7 @@ public class MainDashboardView extends BaseView {
 
         String imagePath = "/com/ptit/dental/image/";
 
-        //header
+        // header
         JPanel headerPanel = new JPanel(new BorderLayout());
         headerPanel.setBackground(Color.WHITE);
         headerPanel.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
@@ -32,7 +31,8 @@ public class MainDashboardView extends BaseView {
         logoPanel.setOpaque(false);
 
         JLabel logoLabel = new JLabel(new ImageIcon(getClass().getResource(imagePath + "rang1.png")));
-        JLabel titleLabel = new JLabel("<html><b>Dental Management System</b><br>Hệ thống quản lý răng - Xin chào: " + AuthService.staffInfo.getFullname() + "</br></html>");
+        JLabel titleLabel = new JLabel("<html><b>Dental Management System</b><br>Hệ thống quản lý răng - Xin chào: "
+                + AuthService.staffInfo.getFullname() + "</br></html>");
         titleLabel.setFont(new Font("SansSerif", Font.PLAIN, 17));
 
         logoPanel.add(logoLabel);
@@ -66,8 +66,6 @@ public class MainDashboardView extends BaseView {
         setVisible(true);
     }
 
-
-
     private JPanel createMenuButton(String title, String iconPath) {
         JPanel panel = new JPanel(new BorderLayout());
         panel.setBackground(Color.WHITE);
@@ -99,7 +97,6 @@ public class MainDashboardView extends BaseView {
 
         return panel;
     }
-
 
     public JButton getBtnLogout() {
         return btnLogout;

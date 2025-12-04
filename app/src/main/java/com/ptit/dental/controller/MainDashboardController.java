@@ -7,7 +7,6 @@ import java.awt.event.*;
 
 public class MainDashboardController extends BaseController<MainDashboardView> {
 
-
     public MainDashboardController(MainDashboardView view) {
         super(view);
         initController();
@@ -19,15 +18,13 @@ public class MainDashboardController extends BaseController<MainDashboardView> {
                     view,
                     "Bạn có chắc chắn muốn đăng xuất?",
                     "Xác nhận",
-                    JOptionPane.YES_NO_OPTION
-            );
+                    JOptionPane.YES_NO_OPTION);
             if (confirm == JOptionPane.YES_OPTION) {
                 view.dispose();
-                
-                //add nav to login
+
+                // add nav to login
             }
         });
-        
-        
+
     }
 }

@@ -43,8 +43,7 @@ public class StaffDAO {
                             Gender.fromInt(rs.getInt("gender")),
                             rs.getString("address"),
                             rs.getString("phone"),
-                            Role.fromInt(rs.getInt("role"))
-                    );
+                            Role.fromInt(rs.getInt("role")));
                 }
             }
         }
@@ -62,7 +61,7 @@ public class StaffDAO {
                     if (password != null) {
                         password = password.trim();
                     }
-                    
+
                     return new Staff(
                             rs.getInt("id"),
                             rs.getString("username"),
@@ -73,8 +72,7 @@ public class StaffDAO {
                             Gender.fromInt(rs.getInt("gender")),
                             rs.getString("address"),
                             rs.getString("phone"),
-                            Role.fromInt(rs.getInt("role"))
-                    );
+                            Role.fromInt(rs.getInt("role")));
                 }
             }
         }
@@ -86,7 +84,7 @@ public class StaffDAO {
         List<Staff> staffList = new ArrayList<>();
 
         try (PreparedStatement ps = conn.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
+                ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
                 Staff s = new Staff(
                         rs.getInt("id"),
@@ -98,8 +96,7 @@ public class StaffDAO {
                         Gender.fromInt(rs.getInt("gender")),
                         rs.getString("address"),
                         rs.getString("phone"),
-                        Role.fromInt(rs.getInt("role"))
-                );
+                        Role.fromInt(rs.getInt("role")));
                 staffList.add(s);
             }
         }

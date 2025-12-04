@@ -52,7 +52,7 @@ public class InvoiceController extends BaseController<InvoiceView> {
                 Patient patient = patientDAO.getById(invoice.getPatientId());
                 String patientName = patient != null ? patient.getFullname() : "N/A";
                 String serviceSummary = getServiceSummary(invoice);
-                model.addRow(new Object[]{
+                model.addRow(new Object[] {
                         invoice.getId(),
                         dateFormat.format(invoice.getCreatedDate()),
                         serviceSummary,
@@ -96,10 +96,10 @@ public class InvoiceController extends BaseController<InvoiceView> {
             model.setRowCount(0);
 
             if (invoices.isEmpty()) {
-                JOptionPane.showMessageDialog(view, 
-                    "Không tìm thấy hóa đơn nào với từ khóa: \"" + keyword + "\"",
-                    "Thông báo", 
-                    JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(view,
+                        "Không tìm thấy hóa đơn nào với từ khóa: \"" + keyword + "\"",
+                        "Thông báo",
+                        JOptionPane.INFORMATION_MESSAGE);
                 return;
             }
 
@@ -107,7 +107,7 @@ public class InvoiceController extends BaseController<InvoiceView> {
                 Patient patient = patientDAO.getById(invoice.getPatientId());
                 String patientName = patient != null ? patient.getFullname() : "N/A";
                 String serviceSummary = getServiceSummary(invoice);
-                model.addRow(new Object[]{
+                model.addRow(new Object[] {
                         invoice.getId(),
                         dateFormat.format(invoice.getCreatedDate()),
                         serviceSummary,
@@ -204,4 +204,3 @@ public class InvoiceController extends BaseController<InvoiceView> {
         }
     }
 }
-

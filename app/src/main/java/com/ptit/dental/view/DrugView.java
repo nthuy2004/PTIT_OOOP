@@ -1,7 +1,5 @@
 package com.ptit.dental.view;
 
-
-
 import com.ptit.dental.base.BaseView;
 
 import javax.swing.*;
@@ -57,7 +55,7 @@ public class DrugView extends BaseView {
         btnHome.addActionListener(e -> dispose());
 
         // Table setup
-        String[] columnNames = {"Mã thuốc", "Tên thuốc", "Ngày nhập", "Ngày hết hạn", "Giá", "Số lượng tồn kho"};
+        String[] columnNames = { "Mã thuốc", "Tên thuốc", "Ngày nhập", "Ngày hết hạn", "Giá", "Số lượng tồn kho" };
         DefaultTableModel model = new DefaultTableModel(columnNames, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -140,9 +138,9 @@ public class DrugView extends BaseView {
 
     // Method to add medicine to table
     public void addMedicineToTable(String id, String name, String importDate,
-                                   String expiryDate, double price, int quantity) {
+            String expiryDate, double price, int quantity) {
         DefaultTableModel model = (DefaultTableModel) medicineTable.getModel();
-        model.addRow(new Object[]{id, name, importDate, expiryDate,
-                String.format("%.2f", price), quantity});
+        model.addRow(new Object[] { id, name, importDate, expiryDate,
+                String.format("%.2f", price), quantity });
     }
 }

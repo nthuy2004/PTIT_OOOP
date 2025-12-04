@@ -12,7 +12,7 @@ public class MedicalRecordController extends BaseController<MedicalRecordView> {
     private void initListeners() {
         view.saveButton.addActionListener(e -> {
             // TODO: Implement save logic
-            String patientName=view.namePatientField.getText();
+            String patientName = view.namePatientField.getText();
             String doctor = (String) view.doctorComboBox.getSelectedItem();
             String diseaseType = (String) view.diseaseTypeComboBox.getSelectedItem();
             String diagnostic = view.diagnosticArea.getText();

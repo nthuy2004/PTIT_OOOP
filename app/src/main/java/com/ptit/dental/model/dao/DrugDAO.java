@@ -41,7 +41,8 @@ public class DrugDAO {
                     m.setPrice(rs.getDouble("price"));
                     m.setQuantity(rs.getInt("quantity"));
 
-                    // Parse importDate and expiryDate from desc field (format: "importDate;expiryDate")
+                    // Parse importDate and expiryDate from desc field (format:
+                    // "importDate;expiryDate")
                     String desc = rs.getString("desc");
                     if (desc != null && !desc.isEmpty() && desc.contains(";")) {
                         String[] dates = desc.split(";");
@@ -75,7 +76,7 @@ public class DrugDAO {
         List<Drug> medicineList = new ArrayList<>();
 
         try (PreparedStatement ps = conn.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
+                ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
                 Drug m = new Drug();
                 m.setId(rs.getInt("id"));
@@ -192,4 +193,3 @@ public class DrugDAO {
         }
     }
 }
-

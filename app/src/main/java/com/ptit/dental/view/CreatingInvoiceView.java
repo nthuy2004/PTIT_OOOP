@@ -24,7 +24,7 @@ public class CreatingInvoiceView extends JDialog {
 
     private void initComponents() {
         txtPatientID = new JTextField(20);
-        String[] services = {"Khám răng", "Niềng răng", "Nhổ răng", "Trám răng"};
+        String[] services = { "Khám răng", "Niềng răng", "Nhổ răng", "Trám răng" };
         serviceComboBox = new JComboBox<>(services);
         txtAmount = new JTextField(20);
         dateChooser = new JDateChooser();
@@ -45,22 +45,26 @@ public class CreatingInvoiceView extends JDialog {
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
         // Add components
-        gbc.gridx = 0; gbc.gridy = 0;
+        gbc.gridx = 0;
+        gbc.gridy = 0;
         mainPanel.add(new JLabel("Mã bệnh nhân:"), gbc);
         gbc.gridx = 1;
         mainPanel.add(txtPatientID, gbc);
 
-        gbc.gridx = 0; gbc.gridy = 1;
+        gbc.gridx = 0;
+        gbc.gridy = 1;
         mainPanel.add(new JLabel("Dịch vụ:"), gbc);
         gbc.gridx = 1;
         mainPanel.add(serviceComboBox, gbc);
 
-        gbc.gridx = 0; gbc.gridy = 2;
+        gbc.gridx = 0;
+        gbc.gridy = 2;
         mainPanel.add(new JLabel("Số tiền:"), gbc);
         gbc.gridx = 1;
         mainPanel.add(txtAmount, gbc);
 
-        gbc.gridx = 0; gbc.gridy = 3;
+        gbc.gridx = 0;
+        gbc.gridy = 3;
         mainPanel.add(new JLabel("Ngày tạo:"), gbc);
         gbc.gridx = 1;
         mainPanel.add(dateChooser, gbc);
@@ -75,9 +79,23 @@ public class CreatingInvoiceView extends JDialog {
     }
 
     // Getters
-    public JTextField getTxtPatientID() { return txtPatientID; }
-    public JComboBox<String> getServiceComboBox() { return serviceComboBox; }
-    public JTextField getTxtAmount() { return txtAmount; }
-    public JDateChooser getDateChooser() { return dateChooser; }
-    public JButton getSaveButton() { return saveButton; }
+    public JTextField getTxtPatientID() {
+        return txtPatientID;
+    }
+
+    public JComboBox<String> getServiceComboBox() {
+        return serviceComboBox;
+    }
+
+    public JTextField getTxtAmount() {
+        return txtAmount;
+    }
+
+    public JDateChooser getDateChooser() {
+        return dateChooser;
+    }
+
+    public JButton getSaveButton() {
+        return saveButton;
+    }
 }

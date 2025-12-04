@@ -1,7 +1,5 @@
 package com.ptit.dental.controller;
 
-
-
 import com.ptit.dental.base.BaseController;
 import com.ptit.dental.model.dao.DrugDAO;
 import com.ptit.dental.model.dao.DrugDAO;
@@ -50,7 +48,7 @@ public class DrugController extends BaseController<DrugView> {
             model.setRowCount(0);
 
             for (Drug medicine : medicines) {
-                model.addRow(new Object[]{
+                model.addRow(new Object[] {
                         medicine.getId(),
                         medicine.getName(),
                         dateFormat.format(medicine.getImportDate()),
@@ -78,7 +76,7 @@ public class DrugController extends BaseController<DrugView> {
             model.setRowCount(0);
 
             for (Drug medicine : medicines) {
-                model.addRow(new Object[]{
+                model.addRow(new Object[] {
                         medicine.getId(),
                         medicine.getName(),
                         dateFormat.format(medicine.getImportDate()),

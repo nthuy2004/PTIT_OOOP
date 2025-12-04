@@ -42,10 +42,10 @@ public class App {
             e.printStackTrace();
 
             SwingUtilities.invokeLater(() -> {
-                JOptionPane.showMessageDialog(null, 
-                    e.getMessage(),
-                    "Error", 
-                    JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null,
+                        e.getMessage(),
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE);
             });
         }
 
@@ -60,10 +60,10 @@ public class App {
             LoginController loginController = new LoginController(loginView);
 
             loginController.setOnLoginSuccess(() -> {
-               new MainDashboardController(new MainDashboardView()).show();
+                new MainDashboardController(new MainDashboardView()).show();
             });
-            
+
             loginController.show();
-     });
+        });
     }
 }

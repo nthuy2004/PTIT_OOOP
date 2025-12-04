@@ -76,13 +76,13 @@ public class MedicalRecordDAO {
     public void insert(MedicalRecord record) throws SQLException {
         // Tạo prescription mặc định nếu chưa có
         int prescriptionId = getOrCreatePrescription(record.getPatient().getId());
-        
+
         // Lấy service_id đầu tiên (hoặc service mặc định)
         int serviceId = getDefaultServiceId();
-        
+
         // Lấy doctor_id hợp lệ (nếu record không có doctor, lấy doctor mặc định)
         int doctorId = record.getDoctor() != null ? record.getDoctor().getId() : getDefaultDoctorId();
-        
+
         String sql = "INSERT INTO medical_records (patient_id, doctor_id, service_id, prescription_id, diagnostic, plan, status, time) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement ps = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
             ps.setInt(1, record.getPatient().getId());
@@ -106,7 +106,7 @@ public class MedicalRecordDAO {
     public boolean update(MedicalRecord record) throws SQLException {
         // Lấy doctor_id hợp lệ
         int doctorId = record.getDoctor() != null ? record.getDoctor().getId() : getDefaultDoctorId();
-        
+
         String sql = "UPDATE medical_records SET patient_id = ?, doctor_id = ?, service_id = ?, prescription_id = ?, diagnostic = ?, plan = ?, status = ?, time = ? WHERE id = ?";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, record.getPatient().getId());
@@ -161,7 +161,7 @@ public class MedicalRecordDAO {
 
         return new MedicalRecord(id, patient, staff, diagnostic, plan, status, time);
     }
-    
+
     /**
      * Tạo hoặc lấy prescription cho patient
      */
@@ -176,14 +176,14 @@ public class MedicalRecordDAO {
                 }
             }
         }
-        
+
         // Nếu không có, tạo prescription mới
         String insertSql = "INSERT INTO prescriptions (patient_id, status) VALUES (?, ?)";
         try (PreparedStatement ps = conn.prepareStatement(insertSql, PreparedStatement.RETURN_GENERATED_KEYS)) {
             ps.setInt(1, patientId);
             ps.setInt(2, 0); // status = 0 (chưa hoàn thành)
             ps.executeUpdate();
-            
+
             try (ResultSet rs = ps.getGeneratedKeys()) {
                 if (rs.next()) {
                     return rs.getInt(1);
@@ -192,14 +192,14 @@ public class MedicalRecordDAO {
         }
         throw new SQLException("Không thể tạo prescription");
     }
-    
+
     /**
      * Lấy service_id mặc định (service đầu tiên)
      */
     private int getDefaultServiceId() throws SQLException {
         String sql = "SELECT id FROM services ORDER BY id ASC LIMIT 1";
         try (PreparedStatement ps = conn.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
+                ResultSet rs = ps.executeQuery()) {
             if (rs.next()) {
                 return rs.getInt("id");
             }
@@ -207,7 +207,7 @@ public class MedicalRecordDAO {
         // Nếu không có service nào, throw exception
         throw new SQLException("Không có service nào trong database. Vui lòng thêm ít nhất một service.");
     }
-    
+
     /**
      * Lấy doctor_id mặc định (staff đầu tiên, ưu tiên role = 2 là BACSI)
      */
@@ -215,21 +215,21 @@ public class MedicalRecordDAO {
         // Ưu tiên tìm staff có role = 2 (BACSI)
         String sql = "SELECT id FROM staff WHERE role = 2 ORDER BY id ASC LIMIT 1";
         try (PreparedStatement ps = conn.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
+                ResultSet rs = ps.executeQuery()) {
             if (rs.next()) {
                 return rs.getInt("id");
             }
         }
-        
+
         // Nếu không có doctor, lấy staff đầu tiên
         String fallbackSql = "SELECT id FROM staff ORDER BY id ASC LIMIT 1";
         try (PreparedStatement ps = conn.prepareStatement(fallbackSql);
-             ResultSet rs = ps.executeQuery()) {
+                ResultSet rs = ps.executeQuery()) {
             if (rs.next()) {
                 return rs.getInt("id");
             }
         }
-        
+
         // Nếu không có staff nào, throw exception
         throw new SQLException("Không có staff nào trong database. Vui lòng thêm ít nhất một staff.");
     }

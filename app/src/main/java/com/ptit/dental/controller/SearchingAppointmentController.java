@@ -50,7 +50,7 @@ public class SearchingAppointmentController extends BaseController<SearchingAppo
             model.setRowCount(0);
 
             for (Appointment a : list) {
-                model.addRow(new Object[]{
+                model.addRow(new Object[] {
                         a.getId(),
                         a.getPatient().getFullname(),
                         Util.formatDate(a.getDate()),
@@ -65,10 +65,11 @@ public class SearchingAppointmentController extends BaseController<SearchingAppo
         }
     }
 
-
-    /** ===============================
+    /**
+     * ===============================
      * 📌 SEARCH
-     * ===============================*/
+     * ===============================
+     */
     private void searchAppointments() {
         String keyword = view.getSearchField().getText().trim();
 
@@ -83,7 +84,7 @@ public class SearchingAppointmentController extends BaseController<SearchingAppo
             model.setRowCount(0);
 
             for (Appointment a : list) {
-                model.addRow(new Object[]{
+                model.addRow(new Object[] {
                         a.getId(),
                         a.getPatient().getFullname(),
                         Util.formatDate(a.getDate()),
@@ -99,10 +100,11 @@ public class SearchingAppointmentController extends BaseController<SearchingAppo
         }
     }
 
-
-    /** ===============================
+    /**
+     * ===============================
      * 📌 ADD APPOINTMENT
-     * ===============================*/
+     * ===============================
+     */
     private void addAppointment() {
         AppointmentFormDialog dialog = new AppointmentFormDialog(view, null);
         dialog.setVisible(true);
@@ -124,10 +126,11 @@ public class SearchingAppointmentController extends BaseController<SearchingAppo
         }
     }
 
-
-    /** ===============================
+    /**
+     * ===============================
      * 📌 EDIT APPOINTMENT
-     * ===============================*/
+     * ===============================
+     */
     private void editAppointment() {
         int row = view.getAppointmentTable().getSelectedRow();
         if (row == -1) {
@@ -161,10 +164,11 @@ public class SearchingAppointmentController extends BaseController<SearchingAppo
         }
     }
 
-
-    /** ===============================
+    /**
+     * ===============================
      * 📌 DELETE APPOINTMENT
-     * ===============================*/
+     * ===============================
+     */
     private void deleteAppointment() {
         int row = view.getAppointmentTable().getSelectedRow();
         if (row == -1) {

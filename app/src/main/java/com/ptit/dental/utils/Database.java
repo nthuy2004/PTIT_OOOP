@@ -15,11 +15,11 @@ import java.sql.SQLException;
 public class Database {
     public static Database _instance = null;
     private Connection connection;
-    
+
     private final String URL = "jdbc:mysql://180.93.139.29:23306/dental";
     private final String USERNAME = "root";
     private final String PASSWORD = "";
-    
+
     private Database() throws SQLException {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -31,15 +31,14 @@ public class Database {
             throw ex;
         }
     }
-    
+
     public static Database getInstance() throws SQLException {
-        if(_instance == null)
-        {
+        if (_instance == null) {
             _instance = new Database();
         }
         return _instance;
     }
-    
+
     public Connection getConnection() {
         return connection;
     }

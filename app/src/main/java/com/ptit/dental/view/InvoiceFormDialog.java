@@ -68,11 +68,11 @@ public class InvoiceFormDialog extends JDialog {
 
     private void initComponents() {
         // Patient combo box
-        
+
         patientComboBox = new PatientPicker(patients);
 
         // Items table
-        String[] columnNames = {"Dịch vụ", "Đơn giá", "Số lượng", "Thành tiền"};
+        String[] columnNames = { "Dịch vụ", "Đơn giá", "Số lượng", "Thành tiền" };
         itemsTableModel = new DefaultTableModel(columnNames, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -132,8 +132,7 @@ public class InvoiceFormDialog extends JDialog {
         JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
         topPanel.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createTitledBorder("Thông tin bệnh nhân"),
-                BorderFactory.createEmptyBorder(5, 10, 5, 10)
-        ));
+                BorderFactory.createEmptyBorder(5, 10, 5, 10)));
         JLabel patientLabel = new JLabel("Bệnh nhân:");
         patientLabel.setFont(new Font("Arial", Font.BOLD, 12));
         topPanel.add(patientLabel);
@@ -148,8 +147,7 @@ public class InvoiceFormDialog extends JDialog {
         JPanel tablePanel = new JPanel(new BorderLayout(5, 5));
         tablePanel.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createTitledBorder("Danh sách dịch vụ"),
-                BorderFactory.createEmptyBorder(5, 5, 5, 5)
-        ));
+                BorderFactory.createEmptyBorder(5, 5, 5, 5)));
         itemsTable.setRowHeight(25);
         itemsTable.getTableHeader().setFont(new Font("Arial", Font.BOLD, 12));
         itemsTable.setFont(new Font("Arial", Font.PLAIN, 12));
@@ -162,8 +160,7 @@ public class InvoiceFormDialog extends JDialog {
         JPanel itemInputPanel = new JPanel(new BorderLayout(10, 10));
         itemInputPanel.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createTitledBorder("Thêm dịch vụ"),
-                BorderFactory.createEmptyBorder(10, 10, 10, 10)
-        ));
+                BorderFactory.createEmptyBorder(10, 10, 10, 10)));
         itemInputPanel.setBackground(new Color(0xC0C0C0));
 
         // Input fields panel with GridBagLayout for better alignment
@@ -174,7 +171,8 @@ public class InvoiceFormDialog extends JDialog {
         gbcInput.anchor = GridBagConstraints.WEST;
 
         // Row 1: Service Name
-        gbcInput.gridx = 0; gbcInput.gridy = 0;
+        gbcInput.gridx = 0;
+        gbcInput.gridy = 0;
         gbcInput.weightx = 0;
         inputFieldsPanel.add(new JLabel("Tên dịch vụ:"), gbcInput);
         gbcInput.gridx = 1;
@@ -184,7 +182,8 @@ public class InvoiceFormDialog extends JDialog {
         inputFieldsPanel.add(txtServiceName, gbcInput);
 
         // Row 2: Unit Price and Quantity
-        gbcInput.gridx = 0; gbcInput.gridy = 1;
+        gbcInput.gridx = 0;
+        gbcInput.gridy = 1;
         gbcInput.weightx = 0;
         gbcInput.fill = GridBagConstraints.NONE;
         inputFieldsPanel.add(new JLabel("Đơn giá:"), gbcInput);
@@ -234,22 +233,26 @@ public class InvoiceFormDialog extends JDialog {
         gbc.insets = new Insets(5, 5, 5, 5);
         gbc.anchor = GridBagConstraints.WEST;
 
-        gbc.gridx = 0; gbc.gridy = 0;
+        gbc.gridx = 0;
+        gbc.gridy = 0;
         summaryPanel.add(new JLabel("Tổng tiền:"), gbc);
         gbc.gridx = 1;
         summaryPanel.add(txtSubTotal, gbc);
 
-        gbc.gridx = 0; gbc.gridy = 1;
+        gbc.gridx = 0;
+        gbc.gridy = 1;
         summaryPanel.add(new JLabel("Thuế (10%):"), gbc);
         gbc.gridx = 1;
         summaryPanel.add(txtTax, gbc);
 
-        gbc.gridx = 0; gbc.gridy = 2;
+        gbc.gridx = 0;
+        gbc.gridy = 2;
         summaryPanel.add(new JLabel("Giảm giá (5%):"), gbc);
         gbc.gridx = 1;
         summaryPanel.add(txtDiscount, gbc);
 
-        gbc.gridx = 0; gbc.gridy = 3;
+        gbc.gridx = 0;
+        gbc.gridy = 3;
         JLabel totalLabel = new JLabel("Tổng thanh toán:");
         totalLabel.setFont(new Font("Arial", Font.BOLD, 14));
         summaryPanel.add(totalLabel, gbc);
@@ -287,12 +290,13 @@ public class InvoiceFormDialog extends JDialog {
             int quantity = Integer.parseInt(txtQuantity.getText().trim());
 
             if (unitPrice < 0 || quantity < 1) {
-                JOptionPane.showMessageDialog(this, "Đơn giá và số lượng phải lớn hơn 0!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Đơn giá và số lượng phải lớn hơn 0!", "Lỗi",
+                        JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
             double total = unitPrice * quantity;
-            itemsTableModel.addRow(new Object[]{
+            itemsTableModel.addRow(new Object[] {
                     serviceName,
                     String.format("%.2f", unitPrice),
                     quantity,
@@ -306,14 +310,16 @@ public class InvoiceFormDialog extends JDialog {
 
             calculateTotal();
         } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "Đơn giá và số lượng phải là số hợp lệ!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Đơn giá và số lượng phải là số hợp lệ!", "Lỗi",
+                    JOptionPane.ERROR_MESSAGE);
         }
     }
 
     private void removeItem() {
         int selectedRow = itemsTable.getSelectedRow();
         if (selectedRow == -1) {
-            JOptionPane.showMessageDialog(this, "Vui lòng chọn dịch vụ để xóa!", "Thông báo", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn dịch vụ để xóa!", "Thông báo",
+                    JOptionPane.WARNING_MESSAGE);
             return;
         }
         itemsTableModel.removeRow(selectedRow);
@@ -352,7 +358,7 @@ public class InvoiceFormDialog extends JDialog {
             // Load items
             if (invoice.getItems() != null) {
                 for (InvoiceItem item : invoice.getItems()) {
-                    itemsTableModel.addRow(new Object[]{
+                    itemsTableModel.addRow(new Object[] {
                             item.getServiceName(),
                             String.format("%.2f", item.getUnitPrice()),
                             item.getQuantity(),
@@ -425,4 +431,3 @@ public class InvoiceFormDialog extends JDialog {
         return saved;
     }
 }
-

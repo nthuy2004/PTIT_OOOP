@@ -1,7 +1,5 @@
 package com.ptit.dental.view;
 
-
-
 import com.ptit.dental.model.entity.Drug;
 
 import javax.swing.*;
@@ -70,7 +68,8 @@ public class DrugFormDialog extends JDialog {
         gbc.anchor = GridBagConstraints.WEST;
 
         // Tên thuốc
-        gbc.gridx = 0; gbc.gridy = 0;
+        gbc.gridx = 0;
+        gbc.gridy = 0;
         formPanel.add(new JLabel("Tên thuốc:"), gbc);
         gbc.gridx = 1;
         gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -78,7 +77,8 @@ public class DrugFormDialog extends JDialog {
         formPanel.add(txtName, gbc);
 
         // Ngày nhập
-        gbc.gridx = 0; gbc.gridy = 1;
+        gbc.gridx = 0;
+        gbc.gridy = 1;
         gbc.fill = GridBagConstraints.NONE;
         gbc.weightx = 0;
         formPanel.add(new JLabel("Ngày nhập:"), gbc);
@@ -88,7 +88,8 @@ public class DrugFormDialog extends JDialog {
         formPanel.add(importDateChooser, gbc);
 
         // Ngày hết hạn
-        gbc.gridx = 0; gbc.gridy = 2;
+        gbc.gridx = 0;
+        gbc.gridy = 2;
         gbc.fill = GridBagConstraints.NONE;
         gbc.weightx = 0;
         formPanel.add(new JLabel("Ngày hết hạn:"), gbc);
@@ -98,7 +99,8 @@ public class DrugFormDialog extends JDialog {
         formPanel.add(expiryDateChooser, gbc);
 
         // Giá
-        gbc.gridx = 0; gbc.gridy = 3;
+        gbc.gridx = 0;
+        gbc.gridy = 3;
         gbc.fill = GridBagConstraints.NONE;
         gbc.weightx = 0;
         formPanel.add(new JLabel("Giá:"), gbc);
@@ -108,7 +110,8 @@ public class DrugFormDialog extends JDialog {
         formPanel.add(txtPrice, gbc);
 
         // Số lượng
-        gbc.gridx = 0; gbc.gridy = 4;
+        gbc.gridx = 0;
+        gbc.gridy = 4;
         gbc.fill = GridBagConstraints.NONE;
         gbc.weightx = 0;
         formPanel.add(new JLabel("Số lượng tồn kho:"), gbc);
@@ -162,7 +165,8 @@ public class DrugFormDialog extends JDialog {
         try {
             int quantity = Integer.parseInt(txtQuantity.getText().trim());
             if (quantity < 0) {
-                JOptionPane.showMessageDialog(this, "Số lượng phải lớn hơn hoặc bằng 0!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Số lượng phải lớn hơn hoặc bằng 0!", "Lỗi",
+                        JOptionPane.ERROR_MESSAGE);
                 return false;
             }
         } catch (NumberFormatException e) {
@@ -191,4 +195,3 @@ public class DrugFormDialog extends JDialog {
         return saved;
     }
 }
-

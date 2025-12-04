@@ -56,7 +56,7 @@ public class PatientManagementView extends BaseView {
         btnHome.addActionListener(e -> dispose());
 
         // Table setup
-        String[] columnNames = {"Mã BN", "Họ và tên", "Ngày sinh", "Giới tính", "Địa chỉ", "Số điện thoại"};
+        String[] columnNames = { "Mã BN", "Họ và tên", "Ngày sinh", "Giới tính", "Địa chỉ", "Số điện thoại" };
         DefaultTableModel model = new DefaultTableModel(columnNames, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -64,7 +64,7 @@ public class PatientManagementView extends BaseView {
             }
         };
         patientTable = new JTable(model);
-        patientTable.getTableHeader().setReorderingAllowed(false);        
+        patientTable.getTableHeader().setReorderingAllowed(false);
         patientTable.setRowHeight(25);
     }
 
@@ -140,8 +140,8 @@ public class PatientManagementView extends BaseView {
 
     // Method to add patient to table
     public void addPatientToTable(String id, String fullName, String birthDate,
-                                  String gender, String address, String phone) {
+            String gender, String address, String phone) {
         DefaultTableModel model = (DefaultTableModel) patientTable.getModel();
-        model.addRow(new Object[]{id, fullName, birthDate, gender, address, phone});
+        model.addRow(new Object[] { id, fullName, birthDate, gender, address, phone });
     }
 }

@@ -26,8 +26,9 @@ public class LoginView extends BaseView {
 
         String imagePath = "/com/ptit/dental/image/";
         // Ảnh nền
-//
-        Image bgImage = new ImageIcon(getClass().getResource(imagePath + "Blue and White Modern Dental Medical Presentation.png")).getImage();
+        //
+        Image bgImage = new ImageIcon(
+                getClass().getResource(imagePath + "Blue and White Modern Dental Medical Presentation.png")).getImage();
 
         JPanel backgroundPanel = new JPanel() {
             protected void paintComponent(Graphics g) {
@@ -48,7 +49,9 @@ public class LoginView extends BaseView {
         JLabel logoLabel = new JLabel("QUẢN LÝ PHÒNG KHÁM RĂNG", SwingConstants.CENTER);
         logoLabel.setFont(new Font("Roboto", Font.BOLD, 30));
         logoLabel.setForeground(Color.WHITE);
-        gbc.gridx = 0; gbc.gridy = 0; gbc.gridwidth = 2;
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.gridwidth = 2;
         formPanel.add(logoLabel, gbc);
 
         // Username

@@ -10,36 +10,39 @@ public class SearchingInvoice extends BaseView {
     private JButton searchButton;
     private JTable invoiceTable;
     private JLabel titleLabel;
+
     public SearchingInvoice() {
         initComponents();
         setupLayout();
     }
+
     private void initComponents() {
         titleLabel = new JLabel("QUẢN LÝ VIỆN PHÍ");
         titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
         titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
-         // Search components
+        // Search components
         searchField = new JTextField(20);
         searchButton = new JButton("Tìm");
         searchButton.setBackground(new Color(255, 87, 34)); // Orange color
         searchButton.setForeground(Color.WHITE);
 
         // Table
-        String[] columnNames = {"Mã hóa đơn", "Tên bệnh nhân", "Ngày lập", "Tổng tiền"};
+        String[] columnNames = { "Mã hóa đơn", "Tên bệnh nhân", "Ngày lập", "Tổng tiền" };
         DefaultTableModel model = new DefaultTableModel(columnNames, 0);
         invoiceTable = new JTable(model);
     }
+
     private void setupLayout() {
         setLayout(new BorderLayout(10, 10));
-        
+
         // Top panel with icon and title
         JPanel topPanel = new JPanel(new BorderLayout());
         ImageIcon icon = new ImageIcon("path/to/your/icon.png"); // Add your icon path
         JLabel iconLabel = new JLabel(icon);
         topPanel.add(iconLabel, BorderLayout.WEST);
         topPanel.add(titleLabel, BorderLayout.CENTER);
-        
+
         // Search panel
         JPanel searchPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         searchPanel.add(searchField);
@@ -68,7 +71,7 @@ public class SearchingInvoice extends BaseView {
     // Method to add data to table
     public void addInvoiceToTable(String id, String name, String date, double amount) {
         DefaultTableModel model = (DefaultTableModel) invoiceTable.getModel();
-        model.addRow(new Object[]{id, name, date, String.format("%.2f", amount)});
+        model.addRow(new Object[] { id, name, date, String.format("%.2f", amount) });
     }
 
     // Getters for components
@@ -82,5 +85,5 @@ public class SearchingInvoice extends BaseView {
 
     public JTable getInvoiceTable() {
         return invoiceTable;
-    } 
     }
+}

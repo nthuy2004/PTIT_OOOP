@@ -19,7 +19,7 @@ public class PatientFormDialog extends JDialog {
     private JTextField txtPhone;
     private JButton btnSave;
     private JButton btnCancel;
-    
+
     private Patient patient;
     private boolean saved = false;
 
@@ -28,11 +28,11 @@ public class PatientFormDialog extends JDialog {
         this.patient = patient;
         initComponents();
         setupLayout();
-        
+
         if (patient != null) {
             loadPatientData();
         }
-        
+
         setLocationRelativeTo(parent);
     }
 
@@ -41,13 +41,13 @@ public class PatientFormDialog extends JDialog {
         dateChooser = new JDateChooser();
         dateChooser.setDateFormatString("dd/MM/yyyy");
         dateChooser.setDate(new Date());
-        
-        String[] genders = {"Nam", "Nữ"};
+
+        String[] genders = { "Nam", "Nữ" };
         genderComboBox = new JComboBox<>(genders);
-        
+
         txtAddress = new JTextField(20);
         txtPhone = new JTextField(20);
-        
+
         btnSave = new JButton("Lưu");
         btnSave.setBackground(new Color(76, 175, 80));
         btnSave.setForeground(Color.WHITE);
@@ -57,7 +57,7 @@ public class PatientFormDialog extends JDialog {
                 dispose();
             }
         });
-        
+
         btnCancel = new JButton("Hủy");
         btnCancel.addActionListener(e -> dispose());
     }
@@ -65,22 +65,24 @@ public class PatientFormDialog extends JDialog {
     private void setupLayout() {
         setLayout(new BorderLayout());
         setSize(450, 300);
-        
+
         JPanel formPanel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 10, 5, 10);
         gbc.anchor = GridBagConstraints.WEST;
-        
+
         // Họ và tên
-        gbc.gridx = 0; gbc.gridy = 0;
+        gbc.gridx = 0;
+        gbc.gridy = 0;
         formPanel.add(new JLabel("Họ và tên:"), gbc);
         gbc.gridx = 1;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.weightx = 1.0;
         formPanel.add(txtFullname, gbc);
-        
+
         // Ngày sinh
-        gbc.gridx = 0; gbc.gridy = 1;
+        gbc.gridx = 0;
+        gbc.gridy = 1;
         gbc.fill = GridBagConstraints.NONE;
         gbc.weightx = 0;
         formPanel.add(new JLabel("Ngày sinh:"), gbc);
@@ -88,9 +90,10 @@ public class PatientFormDialog extends JDialog {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.weightx = 1.0;
         formPanel.add(dateChooser, gbc);
-        
+
         // Giới tính
-        gbc.gridx = 0; gbc.gridy = 2;
+        gbc.gridx = 0;
+        gbc.gridy = 2;
         gbc.fill = GridBagConstraints.NONE;
         gbc.weightx = 0;
         formPanel.add(new JLabel("Giới tính:"), gbc);
@@ -98,9 +101,10 @@ public class PatientFormDialog extends JDialog {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.weightx = 1.0;
         formPanel.add(genderComboBox, gbc);
-        
+
         // Địa chỉ
-        gbc.gridx = 0; gbc.gridy = 3;
+        gbc.gridx = 0;
+        gbc.gridy = 3;
         gbc.fill = GridBagConstraints.NONE;
         gbc.weightx = 0;
         formPanel.add(new JLabel("Địa chỉ:"), gbc);
@@ -108,9 +112,10 @@ public class PatientFormDialog extends JDialog {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.weightx = 1.0;
         formPanel.add(txtAddress, gbc);
-        
+
         // Số điện thoại
-        gbc.gridx = 0; gbc.gridy = 4;
+        gbc.gridx = 0;
+        gbc.gridy = 4;
         gbc.fill = GridBagConstraints.NONE;
         gbc.weightx = 0;
         formPanel.add(new JLabel("Số điện thoại:"), gbc);
@@ -118,9 +123,9 @@ public class PatientFormDialog extends JDialog {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.weightx = 1.0;
         formPanel.add(txtPhone, gbc);
-        
+
         add(formPanel, BorderLayout.CENTER);
-        
+
         // Buttons
         JPanel btnPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         btnPanel.add(btnSave);
@@ -166,7 +171,7 @@ public class PatientFormDialog extends JDialog {
         if (!saved) {
             return null;
         }
-        
+
         Patient p = patient != null ? patient : new Patient();
         p.setFullname(txtFullname.getText().trim());
         p.setBirthday(dateChooser.getDate());
@@ -174,7 +179,7 @@ public class PatientFormDialog extends JDialog {
         p.setGender(genderStr.equals("Nam") ? Gender.NAM : Gender.NU);
         p.setAddress(txtAddress.getText().trim());
         p.setPhone(txtPhone.getText().trim());
-        
+
         return p;
     }
 
@@ -182,4 +187,3 @@ public class PatientFormDialog extends JDialog {
         return saved;
     }
 }
-

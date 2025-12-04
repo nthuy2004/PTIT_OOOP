@@ -35,7 +35,7 @@ public class AppointmentFormDialog extends JDialog {
         if (appointment != null)
             populate(appointment);
     }
-    
+
     public static AppointmentFormDialog Create(BaseView parent, Patient patient) {
         AppointmentFormDialog a = new AppointmentFormDialog(parent, null);
         a.tfPatientName.setSelectedById(patient.getId());
@@ -50,17 +50,16 @@ public class AppointmentFormDialog extends JDialog {
         form.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
 
         form.add(new JLabel("Tên bệnh nhân:"));
-        
+
         PatientDAO pDAO = Injector.get(PatientDAO.class);
         try {
             tfPatientName = new PatientPicker(pDAO.getAll());
-            if(this.appointment != null)
-            {
+            if (this.appointment != null) {
                 tfPatientName.setSelectedById(this.appointment.getPatient().getId());
             }
             form.add(tfPatientName);
+        } catch (SQLException ex) {
         }
-        catch(SQLException ex){}
 
         form.add(new JLabel("Ngày (dd/MM/yyyy):"));
         tfDate = new JTextField();

@@ -85,12 +85,12 @@ public class PatientDetailController extends BaseController<PatientDetailDialog>
         model.setRowCount(0);
 
         for (Appointment a : list) {
-            model.addRow(new Object[]{
-                a.getId(),
-                a.getPatient().getFullname(),
-                Util.formatDate(a.getDate()),
-                a.getTimeOfDatetime(),
-                a.getReason(),
+            model.addRow(new Object[] {
+                    a.getId(),
+                    a.getPatient().getFullname(),
+                    Util.formatDate(a.getDate()),
+                    a.getTimeOfDatetime(),
+                    a.getReason(),
             });
         }
     }

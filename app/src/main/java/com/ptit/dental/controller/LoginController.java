@@ -26,8 +26,8 @@ public class LoginController extends BaseController<LoginView> {
 
     private void initController() {
         view.loginButton.addActionListener(e -> handleLogin());
-        view.showPasswordCheck.addActionListener(e ->
-                view.passwordField.setEchoChar(view.showPasswordCheck.isSelected() ? (char) 0 : '•'));
+        view.showPasswordCheck.addActionListener(
+                e -> view.passwordField.setEchoChar(view.showPasswordCheck.isSelected() ? (char) 0 : '•'));
     }
 
     private void handleLogin() {
@@ -35,22 +35,22 @@ public class LoginController extends BaseController<LoginView> {
         String password = new String(view.passwordField.getPassword()).trim();
 
         if (username.isEmpty() || password.isEmpty()) {
-            JOptionPane.showMessageDialog(view, 
-                "Vui lòng điền đầy đủ tên đăng nhập và mật khẩu!", 
-                "Cảnh báo", 
-                JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(view,
+                    "Vui lòng điền đầy đủ tên đăng nhập và mật khẩu!",
+                    "Cảnh báo",
+                    JOptionPane.WARNING_MESSAGE);
             return;
         }
 
         try {
             AuthService authService = Injector.get(AuthService.class);
             boolean loginSuccess = authService.Login(username, password);
-            
+
             if (loginSuccess) {
-                JOptionPane.showMessageDialog(view, 
-                    "Đăng nhập thành công!", 
-                    "Thành công", 
-                    JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(view,
+                        "Đăng nhập thành công!",
+                        "Thành công",
+                        JOptionPane.INFORMATION_MESSAGE);
 
                 view.dispose();
 
@@ -63,13 +63,13 @@ public class LoginController extends BaseController<LoginView> {
             if (errorMessage == null || errorMessage.isEmpty()) {
                 errorMessage = "Đã xảy ra lỗi không xác định khi đăng nhập";
             }
-            
+
             ex.printStackTrace();
-            
-            JOptionPane.showMessageDialog(view, 
-                errorMessage, 
-                "Lỗi đăng nhập", 
-                JOptionPane.ERROR_MESSAGE);
+
+            JOptionPane.showMessageDialog(view,
+                    errorMessage,
+                    "Lỗi đăng nhập",
+                    JOptionPane.ERROR_MESSAGE);
         }
     }
 }

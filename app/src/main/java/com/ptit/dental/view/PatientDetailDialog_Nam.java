@@ -13,11 +13,8 @@ import java.sql.Connection;
 import java.util.List;
 
 public class PatientDetailDialog_Nam extends JDialog {
-    private int patientId;
-
     public PatientDetailDialog_Nam(JFrame parent, int patientId) {
         super(parent, "Chi tiết bệnh nhân", true);
-        this.patientId = patientId;
         setSize(900, 550);
         setLocationRelativeTo(parent);
         setLayout(new BorderLayout());
@@ -29,22 +26,31 @@ public class PatientDetailDialog_Nam extends JDialog {
             List<MedicalRecord> records = medicalRecordDAO.getByPatientId(patientId);
 
             // Lịch hẹn table
-            String[] apptHeaders = {"ID", "Thời gian", "Ghi chú/Lý do"};
+            String[] apptHeaders = { "ID", "Thời gian", "Ghi chú/Lý do" };
             DefaultTableModel apptModel = new DefaultTableModel(apptHeaders, 0) {
-                @Override public boolean isCellEditable(int r, int c) { return false; } };
+                @Override
+                public boolean isCellEditable(int r, int c) {
+                    return false;
+                }
+            };
             for (Appointment appt : appointments) {
-                //apptModel.addRow(new Object[]{appt.getId(), appt.time, appt.getService()});
+                // apptModel.addRow(new Object[]{appt.getId(), appt.time, appt.getService()});
             }
 
             JTable tblAppointments = new JTable(apptModel);
             JScrollPane spAppointments = new JScrollPane(tblAppointments);
 
             // Hồ sơ bệnh table
-            String[] recordHeaders = {"ID", "Chẩn đoán", "Kế hoạch", "Trạng thái", "Thời gian"};
+            String[] recordHeaders = { "ID", "Chẩn đoán", "Kế hoạch", "Trạng thái", "Thời gian" };
             DefaultTableModel recordModel = new DefaultTableModel(recordHeaders, 0) {
-                @Override public boolean isCellEditable(int r, int c) { return false; } };
+                @Override
+                public boolean isCellEditable(int r, int c) {
+                    return false;
+                }
+            };
             for (MedicalRecord rec : records) {
-                recordModel.addRow(new Object[]{rec.getId(), rec.getDiagnostic(), rec.getPlan(), rec.getStatus(), rec.getTime()});
+                recordModel.addRow(new Object[] { rec.getId(), rec.getDiagnostic(), rec.getPlan(), rec.getStatus(),
+                        rec.getTime() });
             }
 
             JTable tblRecords = new JTable(recordModel);
@@ -63,7 +69,8 @@ public class PatientDetailDialog_Nam extends JDialog {
             add(panelBtn, BorderLayout.SOUTH);
         } catch (Exception ex) {
             ex.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Lỗi khi tải dữ liệu chi tiết bệnh nhân: " + ex.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Lỗi khi tải dữ liệu chi tiết bệnh nhân: " + ex.getMessage(), "Lỗi",
+                    JOptionPane.ERROR_MESSAGE);
             dispose();
         }
     }

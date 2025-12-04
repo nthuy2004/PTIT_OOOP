@@ -38,8 +38,7 @@ public class PatientDAO {
                             rs.getDate("birthday"),
                             Gender.fromInt(rs.getInt("gender")),
                             rs.getString("address"),
-                            rs.getString("phone")
-                    );
+                            rs.getString("phone"));
                 }
             }
         }
@@ -51,7 +50,7 @@ public class PatientDAO {
         List<Patient> patientList = new ArrayList<>();
 
         try (PreparedStatement ps = conn.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
+                ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
                 Patient p = new Patient(
                         rs.getInt("id"),
@@ -59,8 +58,7 @@ public class PatientDAO {
                         rs.getDate("birthday"),
                         Gender.fromInt(rs.getInt("gender")),
                         rs.getString("address"),
-                        rs.getString("phone")
-                );
+                        rs.getString("phone"));
                 patientList.add(p);
             }
         }
@@ -81,8 +79,7 @@ public class PatientDAO {
                             rs.getDate("birthday"),
                             Gender.fromInt(rs.getInt("gender")),
                             rs.getString("address"),
-                            rs.getString("phone")
-                    );
+                            rs.getString("phone"));
                     patientList.add(p);
                 }
             }
@@ -125,4 +122,3 @@ public class PatientDAO {
         }
     }
 }
-
