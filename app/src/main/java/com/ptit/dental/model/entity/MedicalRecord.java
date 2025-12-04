@@ -13,14 +13,14 @@ import java.util.List;
  */
 
 public class MedicalRecord {
-    public Integer id;
-    public Patient patient;
-    public Staff doctor;
-    public String diagnostic;
-    public String plan;
-    public String status;
-    public LocalDateTime time;
-    public List<ServiceUsage> serviceUsages;
+    private Integer id;
+    private Patient patient;
+    private Staff doctor;
+    private String diagnostic;
+    private String plan;
+    private String status;
+    private LocalDateTime time;
+    private List<ServiceUsage> serviceUsages;
 
     public MedicalRecord(Integer id,
             Patient patient,
@@ -73,4 +73,34 @@ public class MedicalRecord {
     public List<ServiceUsage> getServiceUsages() {
         return serviceUsages;
     }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public void setPatient(Patient patient) {
+        this.patient = patient;
+    }
+
+    public void setDoctor(Staff doctor) {
+        this.doctor = doctor;
+    }
+
+    public void setDiagnostic(String diagnostic) {
+        this.diagnostic = diagnostic;
+    }
+
+    public void setPlan(String plan) {
+        this.plan = plan;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public void setTime(LocalDateTime time) {
+        this.time = time;
+    }
+    
+    
 }

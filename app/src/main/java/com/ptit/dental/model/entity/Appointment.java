@@ -13,11 +13,11 @@ import java.time.ZoneId;
 import java.util.Date;
 
 public class Appointment {
-    public Integer id;
-    public LocalDateTime time;
-    public String reason;
-    public Patient patient;
-    public Staff doctor;
+    private Integer id;
+    private LocalDateTime time;
+    private String reason;
+    private Patient patient;
+    private Staff doctor;
 
     public Appointment(Integer id,
             LocalDateTime time,
@@ -31,13 +31,44 @@ public class Appointment {
         this.doctor = doctor;
     }
 
-    // Convenience getters used by older UI/controller code
     public Integer getId() {
         return id;
     }
 
-    public String getPatientName() {
-        return patient != null ? patient.getFullname() : "";
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public LocalDateTime getTime() {
+        return time;
+    }
+
+    public void setTime(LocalDateTime time) {
+        this.time = time;
+    }
+
+    public String getReason() {
+        return reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
+    }
+
+    public Patient getPatient() {
+        return patient;
+    }
+
+    public void setPatient(Patient patient) {
+        this.patient = patient;
+    }
+
+    public Staff getDoctor() {
+        return doctor;
+    }
+
+    public void setDoctor(Staff doctor) {
+        this.doctor = doctor;
     }
 
     public Date getDate() {
@@ -46,15 +77,7 @@ public class Appointment {
         return Date.from(time.atZone(ZoneId.systemDefault()).toInstant());
     }
 
-    public String getTime() {
+    public String getTimeOfDatetime() {
         return time != null ? time.toLocalTime().toString() : "";
-    }
-
-    public String getService() {
-        return reason;
-    }
-
-    public String getNote() {
-        return "";
     }
 }

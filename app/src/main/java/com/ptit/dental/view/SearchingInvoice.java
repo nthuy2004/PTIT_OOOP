@@ -31,7 +31,7 @@ public class SearchingInvoice extends BaseView {
         invoiceTable = new JTable(model);
     }
     private void setupLayout() {
-       setLayout(new BorderLayout(10, 10));
+        setLayout(new BorderLayout(10, 10));
         
         // Top panel with icon and title
         JPanel topPanel = new JPanel(new BorderLayout());

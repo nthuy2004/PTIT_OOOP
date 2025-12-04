@@ -65,6 +65,7 @@ public class PatientManagementView extends BaseView {
         };
         patientTable = new JTable(model);
         patientTable.getTableHeader().setReorderingAllowed(false);        
+        patientTable.setRowHeight(25);
     }
 
     private void setupLayout() {

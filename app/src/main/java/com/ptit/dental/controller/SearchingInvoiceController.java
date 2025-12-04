@@ -17,6 +17,7 @@ public class SearchingInvoiceController extends BaseController<SearchingInvoice>
     private void searchInvoices() {
         String query = view.getSearchField().getText();
         // Implement search logic here
+        // vcl ???
     }
 
 }

@@ -158,11 +158,15 @@ public class SearchingAppointment extends BaseView {
                 "Tên bệnh nhân",
                 "Ngày",
                 "Giờ",
-                "Dịch vụ",
-                "Ghi chú"
+                "Ghi chú",
         };
 
-        DefaultTableModel model = new DefaultTableModel(columnNames, 0);
+        DefaultTableModel model = new DefaultTableModel(columnNames, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false; // Table read-only
+            }
+        };
         appointmentTable = new JTable(model);
         appointmentTable.setRowHeight(25);
     }

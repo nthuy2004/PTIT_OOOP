@@ -1,5 +1,6 @@
 package com.ptit.dental.view;
 
+import com.ptit.dental.base.BaseView;
 import com.ptit.dental.model.dao.PatientDAO;
 import com.ptit.dental.model.entity.Appointment;
 import com.ptit.dental.model.entity.Patient;
@@ -24,19 +25,25 @@ public class AppointmentFormDialog extends JDialog {
     private PatientPicker tfPatientName;
     private JTextField tfDate; // dd/MM/yyyy
     private JTextField tfTime; // HH:mm
-    private JTextField tfService;
+    private JTextField tfReason;
     private JTextArea taNote;
 
-    public AppointmentFormDialog(SearchingAppointment parent, Appointment appointment) {
+    public AppointmentFormDialog(BaseView parent, Appointment appointment) {
         super(parent, true);
         this.appointment = appointment;
         initUI();
         if (appointment != null)
             populate(appointment);
     }
+    
+    public static AppointmentFormDialog Create(BaseView parent, Patient patient) {
+        AppointmentFormDialog a = new AppointmentFormDialog(parent, null);
+        a.tfPatientName.setSelectedById(patient.getId());
+        return a;
+    }
 
     private void initUI() {
-        setTitle("Form Lịch Hẹn");
+        setTitle("Lịch hẹn");
         setLayout(new BorderLayout(8, 8));
 
         JPanel form = new JPanel(new GridLayout(5, 2, 6, 6));
@@ -47,6 +54,10 @@ public class AppointmentFormDialog extends JDialog {
         PatientDAO pDAO = Injector.get(PatientDAO.class);
         try {
             tfPatientName = new PatientPicker(pDAO.getAll());
+            if(this.appointment != null)
+            {
+                tfPatientName.setSelectedById(this.appointment.getPatient().getId());
+            }
             form.add(tfPatientName);
         }
         catch(SQLException ex){}
@@ -60,8 +71,8 @@ public class AppointmentFormDialog extends JDialog {
         form.add(tfTime);
 
         form.add(new JLabel("Dịch vụ:"));
-        tfService = new JTextField();
-        form.add(tfService);
+        tfReason = new JTextField();
+        form.add(tfReason);
 
         form.add(new JLabel("Ghi chú:"));
         taNote = new JTextArea(5, 2);
@@ -94,15 +105,15 @@ public class AppointmentFormDialog extends JDialog {
     private void populate(Appointment app) {
         if (app == null)
             return;
-        tfPatientName.setSelectedById(app.patient.getId());
+        tfPatientName.setSelectedById(app.getPatient().getId());
         if (app.getDate() != null) {
             DateTimeFormatter df = DateTimeFormatter.ofPattern("dd/MM/yyyy");
             LocalDate ld = LocalDate.ofInstant(app.getDate().toInstant(), java.time.ZoneId.systemDefault());
             tfDate.setText(ld.format(df));
         }
-        tfTime.setText(app.getTime());
-        tfService.setText(app.getService());
-        taNote.setText(app.getNote());
+        tfTime.setText(app.getTimeOfDatetime());
+        tfReason.setText(app.getReason());
+        taNote.setText("");
     }
 
     private void onSave() {
@@ -110,7 +121,7 @@ public class AppointmentFormDialog extends JDialog {
             Patient patient = tfPatientName.getSelectedPatient();
             String dateStr = tfDate.getText().trim();
             String timeStr = tfTime.getText().trim();
-            String service = tfService.getText().trim();
+            String reason = tfReason.getText().trim();
             // note ignored for now
 
             LocalDate ld = LocalDate.parse(dateStr, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
@@ -118,11 +129,11 @@ public class AppointmentFormDialog extends JDialog {
             LocalDateTime ldt = LocalDateTime.of(ld, lt);
 
             if (appointment == null) {
-                appointment = new Appointment(null, ldt, service, patient, null);
+                appointment = new Appointment(null, ldt, reason, patient, null);
             } else {
-                appointment.time = ldt;
-                appointment.reason = service;
-                appointment.patient = patient;
+                appointment.setTime(ldt);
+                appointment.setReason(reason);
+                appointment.setPatient(patient);
             }
 
             saved = true;

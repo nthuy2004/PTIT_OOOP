@@ -52,11 +52,10 @@ public class SearchingAppointmentController extends BaseController<SearchingAppo
             for (Appointment a : list) {
                 model.addRow(new Object[]{
                         a.getId(),
-                        a.getPatientName(),
+                        a.getPatient().getFullname(),
                         Util.formatDate(a.getDate()),
-                        a.getTime(),
-                        a.getService(),
-                        a.getNote()
+                        a.getTimeOfDatetime(),
+                        a.getReason(),
                 });
             }
         } catch (SQLException e) {
@@ -86,11 +85,10 @@ public class SearchingAppointmentController extends BaseController<SearchingAppo
             for (Appointment a : list) {
                 model.addRow(new Object[]{
                         a.getId(),
-                        a.getPatientName(),
-                        dateFormat.format(a.getDate()),
-                        a.getTime(),
-                        a.getService(),
-                        a.getNote()
+                        a.getPatient().getFullname(),
+                        Util.formatDate(a.getDate()),
+                        a.getTimeOfDatetime(),
+                        a.getReason(),
                 });
             }
 

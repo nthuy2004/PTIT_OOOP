@@ -11,10 +11,10 @@ package com.ptit.dental.model.entity;
 import java.util.List;
 
 public class Prescription {
-    public Integer id;
-    public Patient patient;
-    public Integer status;
-    public List<PrescriptionDetail> details;
+    private Integer id;
+    private Patient patient;
+    private Integer status;
+    private List<PrescriptionDetail> details;
 
     public Prescription(Integer id, Patient patient, Integer status) {
         this.id = id;
@@ -25,4 +25,30 @@ public class Prescription {
     public void setDetails(List<PrescriptionDetail> details) {
         this.details = details;
     }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Patient getPatient() {
+        return patient;
+    }
+
+    public void setPatient(Patient patient) {
+        this.patient = patient;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+    
+    
 }

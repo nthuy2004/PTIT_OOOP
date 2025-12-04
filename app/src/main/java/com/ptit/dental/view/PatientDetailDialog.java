@@ -117,6 +117,7 @@ public class PatientDetailDialog extends BaseView {
         };
         tblRecords = new JTable(model);
         tblRecords.getTableHeader().setReorderingAllowed(false);
+        tblRecords.setRowHeight(25);
         
         panel.add(new JScrollPane(tblRecords), BorderLayout.CENTER);
         
@@ -142,8 +143,7 @@ public class PatientDetailDialog extends BaseView {
                 "Tên bệnh nhân",
                 "Ngày",
                 "Giờ",
-                "Dịch vụ",
-                "Ghi chú"
+                "Ghi chú",
         };
         
         DefaultTableModel model = new DefaultTableModel(columnNames, 0) {
@@ -155,6 +155,7 @@ public class PatientDetailDialog extends BaseView {
         
         tblAppointments = new JTable(model);
         tblAppointments.getTableHeader().setReorderingAllowed(false);
+        tblAppointments.setRowHeight(25);
         
         panel.add(new JScrollPane(tblAppointments), BorderLayout.CENTER);
 

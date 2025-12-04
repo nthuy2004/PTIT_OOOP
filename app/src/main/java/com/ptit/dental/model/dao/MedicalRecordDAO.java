@@ -97,7 +97,7 @@ public class MedicalRecordDAO {
 
             try (ResultSet rs = ps.getGeneratedKeys()) {
                 if (rs.next()) {
-                    record.id = rs.getInt(1);
+                    record.setId(rs.getInt(1));
                 }
             }
         }

@@ -33,7 +33,7 @@ public class PatientDetailDialog_Nam extends JDialog {
             DefaultTableModel apptModel = new DefaultTableModel(apptHeaders, 0) {
                 @Override public boolean isCellEditable(int r, int c) { return false; } };
             for (Appointment appt : appointments) {
-                apptModel.addRow(new Object[]{appt.getId(), appt.time, appt.getService()});
+                //apptModel.addRow(new Object[]{appt.getId(), appt.time, appt.getService()});
             }
 
             JTable tblAppointments = new JTable(apptModel);
