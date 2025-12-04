@@ -10,166 +10,187 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
 /**
- *
- * @author Administrator
+ * Patient Medical Record Detail Dialog
  */
 public class PatientDetailDialog extends BaseView {
-    
-    public JTextField txtFullname, txtBirthday, txtGender, txtPhone;
+
+    // Patient info
+    public JTextField txtFullname, txtGender, txtPhone;
     public JTextArea txtAddress;
 
-    public JTable tblRecords, tblAppointments;
+    // Doctor & Diagnostic info
+    public JComboBox<String> cbDoctorName;
+    public JComboBox<String> cbServiceType;
+    public JTextField txtVisitDate;
+    public JComboBox<String> cbTreatmentStatus;
+    public JTextArea txtDiagnosis, txtTreatmentPlan;
 
-    public JButton btnAddRecord, btnViewRecord, btnEditRecord;
-    public JButton btnAddAppointment, btnViewAppointment, btnEditAppointment, btnDeleteAppointment;
-    
+    // Services table
+    public JTable tblServices;
+
+    // Buttons
+    public JButton btnSave, btnCancel;
+
     public PatientDetailDialog() {
-        setTitle("Hồ sơ bệnh án của bệnh nhân");
-        setSize(900, 600);
+        setTitle("Chi tiết hồ sơ bệnh án");
+        setSize(1100, 750);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-
         setLayout(new BorderLayout());
-        initLayout();
+
+        add(createHeaderPanel(), BorderLayout.NORTH);
+        add(createContentPanel(), BorderLayout.CENTER);
     }
-    
-    private void initLayout()
-    {
-        add(createPatientInfoPanel(), BorderLayout.NORTH);
-        add(createTabbedPane(), BorderLayout.CENTER);
-    }
-    
-    private JPanel createPatientInfoPanel() {
-        JPanel panel = new JPanel(new GridBagLayout());
+
+    // ---------------------------- HEADER PANEL ----------------------------
+    private JPanel createHeaderPanel() {
+        JPanel p = new JPanel(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
-        c.insets = new Insets(5, 5, 5, 5);
+        c.insets = new Insets(10, 12, 10, 12);
+        c.anchor = GridBagConstraints.WEST;
+        c.fill = GridBagConstraints.HORIZONTAL;
 
-        JLabel lblFullname = new JLabel("Tên đầy đủ:");
-        JLabel lblBirthday = new JLabel("Ngày sinh:");
-        JLabel lblGender = new JLabel("Giới tính:");
-        JLabel lblPhone = new JLabel("SĐT:");
-        JLabel lblAddress = new JLabel("Địa chỉ:");
+        // Title
+        JLabel lblTitle = new JLabel("Chi tiết hồ sơ bệnh án");
+        lblTitle.setFont(new Font("Arial", Font.BOLD, 16));
+        c.gridx = 0;
+        c.gridy = 0;
+        c.gridwidth = 4;
+        p.add(lblTitle, c);
 
-        txtFullname = new JTextField(20);
-        txtBirthday = new JTextField(10);
-        txtGender = new JTextField(8);
-        txtPhone = new JTextField(15);
-        txtAddress = new JTextArea(3, 30);
+        // Reset for patient info
+        c.gridwidth = 1;
+        c.fill = GridBagConstraints.HORIZONTAL;
 
+        // Row 1 - Patient name & Doctor
+        c.gridx = 0;
+        c.gridy = 1;
+        p.add(new JLabel("Tên bệnh nhân:"), c);
+        txtFullname = new JTextField(15);
         txtFullname.setEditable(false);
-        txtBirthday.setEditable(false);
+        c.gridx = 1;
+        p.add(txtFullname, c);
+
+        c.gridx = 2;
+        p.add(new JLabel("Bác sĩ điều trị:"), c);
+        cbDoctorName = new JComboBox<>();
+        c.gridx = 3;
+        p.add(cbDoctorName, c);
+
+        // Row 2 - Service Type & Visit Date
+        c.gridx = 0;
+        c.gridy = 2;
+        p.add(new JLabel("Loại bệnh/dịch vụ chính:"), c);
+        cbServiceType = new JComboBox<>();
+        c.gridx = 1;
+        p.add(cbServiceType, c);
+
+        c.gridx = 2;
+        p.add(new JLabel("Ngày khám:"), c);
+        txtVisitDate = new JTextField(15);
+        c.gridx = 3;
+        p.add(txtVisitDate, c);
+
+        // Row 3 - Gender & Status
+        c.gridx = 0;
+        c.gridy = 3;
+        p.add(new JLabel("Giới tính:"), c);
+        txtGender = new JTextField(15);
         txtGender.setEditable(false);
+        c.gridx = 1;
+        p.add(txtGender, c);
+
+        c.gridx = 2;
+        p.add(new JLabel("Trạng thái:"), c);
+        cbTreatmentStatus = new JComboBox<>(new String[] { "Not Yet", "Processing", "Completed" });
+        c.gridx = 3;
+        p.add(cbTreatmentStatus, c);
+
+        // Row 4 - Phone
+        c.gridx = 0;
+        c.gridy = 4;
+        p.add(new JLabel("Số điện thoại:"), c);
+        txtPhone = new JTextField(15);
         txtPhone.setEditable(false);
+        c.gridx = 1;
+        p.add(txtPhone, c);
+
+        return p;
+    }
+
+    // ---------------------------- CONTENT PANEL (Main Area)
+    // ----------------------------
+    private JPanel createContentPanel() {
+        JPanel p = new JPanel(new GridBagLayout());
+        GridBagConstraints c = new GridBagConstraints();
+        c.insets = new Insets(10, 12, 10, 12);
+        c.fill = GridBagConstraints.BOTH;
+        c.weightx = 1;
+
+        // Section 1: Address
+        c.gridx = 0;
+        c.gridy = 0;
+        c.gridwidth = 4;
+        p.add(new JLabel("Địa chỉ:"), c);
+
+        txtAddress = new JTextArea(2, 50);
         txtAddress.setEditable(false);
+        c.gridy = 1;
+        p.add(new JScrollPane(txtAddress), c);
 
-        c.gridx = 0; c.gridy = 0;
-        panel.add(lblFullname, c);
+        // Section 2: Services used
+        c.gridy = 2;
+        p.add(new JLabel("Các dịch vụ đã sử dụng trong hồ sơ bệnh án:"), c);
 
-        c.gridx = 1;
-        panel.add(txtFullname, c);
-
-        c.gridx = 2;
-        panel.add(lblBirthday, c);
-
-        c.gridx = 3;
-        panel.add(txtBirthday, c);
-
-        c.gridx = 0; c.gridy = 1;
-        panel.add(lblGender, c);
-
-        c.gridx = 1;
-        panel.add(txtGender, c);
-
-        c.gridx = 2;
-        panel.add(lblPhone, c);
-
-        c.gridx = 3;
-        panel.add(txtPhone, c);
-
-        c.gridx = 0; c.gridy = 2;
-        panel.add(lblAddress, c);
-
-        c.gridx = 1; c.gridwidth = 3;
-        panel.add(new JScrollPane(txtAddress), c);
-
-        return panel;
-    }
-
-    private JTabbedPane createTabbedPane() {
-        JTabbedPane tabs = new JTabbedPane();
-
-        tabs.add("Danh sách bệnh án", createMedicalRecordsPanel());
-        tabs.add("Lịch hẹn", createAppointmentsPanel());
-
-        return tabs;
-    }
-
-    private JPanel createMedicalRecordsPanel() {
-        JPanel panel = new JPanel(new BorderLayout());
-        
-
-        String[] columnNames = {"ID", "Bác sĩ điều trị", "Dịch vụ đã dùng", "Thời gian tạo", "Chẩn đoán", "Kế hoạch điều trị", "Trạng thái"};
-        DefaultTableModel model = new DefaultTableModel(columnNames, 0) {
+        String[] cols = { "Tên dịch vụ", "Số lượng", "Ghi chú", "Đơn giá" };
+        DefaultTableModel model = new DefaultTableModel(cols, 0) {
             @Override
-            public boolean isCellEditable(int row, int column) {
-                return false; // Table read-only
+            public boolean isCellEditable(int r, int c) {
+                return false;
             }
         };
-        tblRecords = new JTable(model);
-        tblRecords.getTableHeader().setReorderingAllowed(false);
-        
-        panel.add(new JScrollPane(tblRecords), BorderLayout.CENTER);
-        
-        JPanel buttonPanel = new JPanel();
-        btnAddRecord = new JButton("Thêm");
-        btnViewRecord = new JButton("Chi tiết");
-        btnEditRecord = new JButton("Sửa");
+        tblServices = new JTable(model);
+        tblServices.setRowHeight(24);
+        tblServices.getTableHeader().setReorderingAllowed(false);
+        c.gridy = 3;
+        c.weighty = 0.4;
+        p.add(new JScrollPane(tblServices), c);
 
-        buttonPanel.add(btnAddRecord);
-        buttonPanel.add(btnViewRecord);
-        buttonPanel.add(btnEditRecord);
+        // Section 3: Diagnosis
+        c.gridy = 4;
+        c.weighty = 0;
+        p.add(new JLabel("Chẩn đoán:"), c);
 
-        panel.add(buttonPanel, BorderLayout.SOUTH);
-        return panel;
-    }
+        txtDiagnosis = new JTextArea(3, 50);
+        c.gridy = 5;
+        c.weighty = 0.3;
+        p.add(new JScrollPane(txtDiagnosis), c);
 
-    private JPanel createAppointmentsPanel() {
-        JPanel panel = new JPanel(new BorderLayout());
+        // Section 4: Treatment Plan
+        c.gridy = 6;
+        c.weighty = 0;
+        p.add(new JLabel("Kế hoạch điều trị:"), c);
 
-        
-        String[] columnNames = {
-                "Mã lịch hẹn",
-                "Tên bệnh nhân",
-                "Ngày",
-                "Giờ",
-                "Dịch vụ",
-                "Ghi chú"
-        };
-        
-        DefaultTableModel model = new DefaultTableModel(columnNames, 0) {
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return false; // Table read-only
-            }
-        };
-        
-        tblAppointments = new JTable(model);
-        tblAppointments.getTableHeader().setReorderingAllowed(false);
-        
-        panel.add(new JScrollPane(tblAppointments), BorderLayout.CENTER);
+        txtTreatmentPlan = new JTextArea(3, 50);
+        c.gridy = 7;
+        c.weighty = 0.3;
+        p.add(new JScrollPane(txtTreatmentPlan), c);
 
-        JPanel buttonPanel = new JPanel();
-        btnAddAppointment = new JButton("Thêm");
-        btnViewAppointment = new JButton("Xem");
-        btnEditAppointment = new JButton("Sửa");
-        btnDeleteAppointment = new JButton("Xoá");
+        // Buttons
+        btnSave = new JButton("Lưu");
+        btnCancel = new JButton("Hủy");
 
-        buttonPanel.add(btnAddAppointment);
-        buttonPanel.add(btnViewAppointment);
-        buttonPanel.add(btnEditAppointment);
-        buttonPanel.add(btnDeleteAppointment);
+        JPanel btnPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        btnPanel.add(btnSave);
+        btnPanel.add(btnCancel);
 
-        panel.add(buttonPanel, BorderLayout.SOUTH);
-        return panel;
+        c.gridx = 0;
+        c.gridy = 8;
+        c.gridwidth = 4;
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.weighty = 0;
+        p.add(btnPanel, c);
+
+        return p;
     }
 }

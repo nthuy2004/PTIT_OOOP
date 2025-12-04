@@ -5,94 +5,78 @@
 package com.ptit.dental.controller;
 
 import com.ptit.dental.base.BaseController;
-import com.ptit.dental.model.dao.AppointmentDAO;
 import com.ptit.dental.model.dao.MedicalRecordDAO;
-import com.ptit.dental.model.entity.Appointment;
 import com.ptit.dental.model.entity.MedicalRecord;
 import com.ptit.dental.model.entity.Patient;
 import com.ptit.dental.utils.Injector;
-import com.ptit.dental.utils.Util;
 import com.ptit.dental.view.PatientDetailDialog;
-import java.util.List;
 import javax.swing.table.DefaultTableModel;
+import java.util.List;
 
 /**
- *
- * @author Administrator
+ * Controller for Patient Medical Record Detail Dialog
  */
 public class PatientDetailController extends BaseController<PatientDetailDialog> {
-    
+
     private Patient patient;
     private MedicalRecordDAO mDAO;
-    private AppointmentDAO aDAO;
     private List<MedicalRecord> medicalRecords;
-    private List<Appointment> appointments;
-    
+
     public PatientDetailController(PatientDetailDialog view, Patient patient) {
         super(view);
         this.patient = patient;
         this.mDAO = Injector.get(MedicalRecordDAO.class);
-        this.aDAO = Injector.get(AppointmentDAO.class);
         initData();
+        initController();
     }
-    
-    private void initData()
-    {
-        view.setTitle("Hồ sơ bệnh án của bệnh nhân " + patient.getFullname());
-        
+
+    private void initData() {
+        // Set patient info - read-only fields
         view.txtFullname.setText(patient.getFullname());
-        view.txtBirthday.setText(patient.getBirthday().toString());
         view.txtGender.setText(patient.getGender().toString());
         view.txtPhone.setText(patient.getPhone());
         view.txtAddress.setText(patient.getAddress());
-        
-        try
-        {
+
+        // Load medical records
+        try {
             medicalRecords = mDAO.getByPatientId(patient.getId());
-            renderRecords(medicalRecords);
-            
-            appointments = aDAO.getByPatientId(patient.getId());
-            renderApps(appointments);
-        }
-        catch(Exception ex)
-        {
+            if (!medicalRecords.isEmpty()) {
+                MedicalRecord latestRecord = medicalRecords.get(0);
+                // Populate with latest medical record data
+                if (latestRecord.getDoctor() != null) {
+                    view.cbDoctorName.addItem(latestRecord.getDoctor().getFullname());
+                }
+                view.txtVisitDate.setText(latestRecord.getTime().toString());
+                view.cbTreatmentStatus.setSelectedItem(latestRecord.getStatus());
+                view.txtDiagnosis.setText(latestRecord.getDiagnostic());
+                view.txtTreatmentPlan.setText(latestRecord.getPlan());
+                renderServices(latestRecord);
+            }
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
-    
-    private void renderRecords(List<MedicalRecord> mrs)
-    {
-        DefaultTableModel model = (DefaultTableModel) view.tblRecords.getModel();
+
+    private void initController() {
+        view.btnSave.addActionListener(e -> saveRecord());
+        view.btnCancel.addActionListener(e -> view.dispose());
+    }
+
+    private void saveRecord() {
+        // TODO: Implement save logic
+        view.dispose();
+    }
+
+    private void renderServices(MedicalRecord record) {
+        DefaultTableModel model = (DefaultTableModel) view.tblServices.getModel();
         model.setRowCount(0);
 
-        for (MedicalRecord mr : mrs) {
-            model.addRow(new Object[]{
-                mr.getId(),
-                mr.doctor.getFullname(),
-                "ahihi",
-                mr.time.toString(),
-                mr.getDiagnostic(),
-                mr.getPlan(),
-                mr.getStatus()
-            });
-        }
+        // Add sample service data - adjust based on your MedicalRecord structure
+        model.addRow(new Object[] {
+                "Service Name",
+                "1",
+                "Note",
+                "100,000 VND"
+        });
     }
-    
-    private void renderApps(List<Appointment> list)
-    {
-        DefaultTableModel model = (DefaultTableModel) view.tblAppointments.getModel();
-        model.setRowCount(0);
-
-        for (Appointment a : list) {
-                model.addRow(new Object[]{
-                        a.getId(),
-                        a.getPatientName(),
-                        Util.formatDate(a.getDate()),
-                        a.getTime(),
-                        a.getService(),
-                        a.getNote()
-                });
-            }
-    }
-    
 }
